@@ -1,17 +1,16 @@
-"use strict";
+'use strict'
 
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
-const Model = use("Model");
-const _ = require("lodash");
+const Model = use('Model')
 
 /** @type {import('@adonisjs/framework/src/Hash')} */
-const Hash = use("Hash");
+const Hash = use('Hash')
+const _ = require("lodash");
 const uuidv1 = require("uuid/v1");
 const Category = use("App/Models/Category");
 const Database = use("Database");
 
-
-class User extends Model {
+class Userr extends Model {
   static get table() {
     return "Users";
   }
@@ -26,7 +25,7 @@ class User extends Model {
     this.addHook("beforeCreate", userInstance => {
       userInstance.UserID = uuidv1();
       //Convert Array of Role Slugs to comma-separated string
-      userInstance.RoleIDs = userInstance.RoleIDs.join("|");
+      // userInstance.RoleIDs = userInstance.RoleIDs.join("|");
     });
 
     this.addHook("beforeSave", async userInstance => {
@@ -35,19 +34,19 @@ class User extends Model {
       }
     });
 
-    this.addHook("afterFind", userInstance => {
-      //Return the comma-separated roles string as an array
-      userInstance.RoleIDs = userInstance.RoleIDs.split("|");
-    });
+    // this.addHook("afterFind", userInstance => {
+    //   //Return the comma-separated roles string as an array
+    //   userInstance.RoleIDs = userInstance.RoleIDs.split("|");
+    // });
 
-    this.addHook("afterFetch", Instances => {
-      //Return the comma-separated roles string as an array
-      _.map(Instances, userInstance => {
-        userInstance.RoleIDs = userInstance.RoleIDs.split("|");
+    // this.addHook("afterFetch", Instances => {
+    //   //Return the comma-separated roles string as an array
+    //   _.map(Instances, userInstance => {
+    //     userInstance.RoleIDs = userInstance.RoleIDs.split("|");
 
-        return userInstance;
-      });
-    });
+    //     return userInstance;
+    //   });
+    // });
   }
 
   /**
@@ -65,11 +64,10 @@ class User extends Model {
   }
 
   Department() {
-    return this.hasOne("App/Models/Department", "DepartmentID", "DepartmentID");
+    return this.hasOne("App/Models/Category", "CategoryID", "CategoryID");
   }
 
   static async createUser(data) {
-    await this.guardUserData(data);
     data.IsEnabled = 1;
     data.IsLocked = 0;
 
@@ -117,7 +115,7 @@ class User extends Model {
   static async getUsers(fetch_data) {
     const Users = await this.query()
       .where(fetch_data)
-      //.with("Department")
+      .with("Category")
       .fetch();
 
     return Users;
@@ -129,49 +127,9 @@ class User extends Model {
     return User;
   }
 
-  static async getDepartmentHODs(data) {
-    let hods = await this.query()
-      .whereRaw(
-        `DepartmentID = '${data.DepartmentID}' AND OrganizationID = '${data.OrganizationID
-        }' AND RoleIDs LIKE '%hod%'`
-      )
-      .fetch();
-
-    return hods;
-  } //getDepartmentHODs
 
 
-  static async getHeadsOfProcurement(data) {
-    let hops = await this.query()
-      .whereRaw(
-        `OrganizationID = '${data.OrganizationID}' AND RoleIDs LIKE '%hop%'`
-      )
-      .fetch();
 
-    return hops;
-  } //getHeadsOfProcurement
-
-
-  static async guardUserData(data) {
-    //Role Ids must come as a non-empty array
-    if (data.RoleIDs) {
-      if (_.isEmpty(data.RoleIDs) || !_.isArray(data.RoleIDs)) {
-        throw new Error("Roles must be a non-empty array");
-      }
-    }
-  } //guardUserData
-
-  static async getOrganisationUsers(OrganizationID) {
-    const Users = await this.query()
-      .where({
-        OrganizationID,
-        IsEnabled: true
-
-      })
-      .fetch();
-
-    return Users;
-  } //getUsers
 }
 
-module.exports = User;
+module.exports = Userr

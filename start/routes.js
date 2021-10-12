@@ -27,3 +27,70 @@ Route.group(() => {
 
   Route.route("get", "UserController.fetch", ["GET", "POST"]);
 }).prefix("User");
+
+Route.group(() => {
+  Route.post("createcategory", "CategoryController.createCategory");
+  Route.route("getcategory", "CategoryController.getCategory", [
+    "GET",
+    "POST"
+  ]);
+  Route.post("updatecategory", "CategoryController.updateCategory");
+  Route.route("fetchcategory", "CategoryController.fetchCategories", [
+    "GET",
+    "POST"
+  ]);
+  Route.post("deletecategory", "CategoryController.removeCategory");
+
+}).prefix("Category")
+
+Route.group(() => {
+  Route.post("create", "PermissionGroupController.createGroup");
+
+  Route.post("update", "PermissionGroupController.updateGroup");
+
+  Route.route("fetch", "PermissionGroupController.fetchGroups", [
+    "GET",
+    "POST"
+  ]);
+
+  Route.route("getgroup", "PermissionGroupController.getGroup", [
+    "GET",
+    "POST"
+  ]);
+
+  Route.post("delete", "PermissionGroupController.removeGroup");
+})
+  .prefix("PermissionGroups")
+//.middleware(["auth"]);
+
+Route.group(() => {
+  Route.post("create", "PermissionController.createPermission");
+
+  Route.route("fetch", "PermissionController.fetchPermissions", [
+    "GET",
+    "POST"
+  ]);
+
+  Route.route("getpermission", "PermissionController.getPermission", [
+    "GET",
+    "POST"
+  ]);
+
+  Route.post("update", "PermissionController.updatePermission");
+
+  Route.post("delete", "PermissionController.removePermission");
+})
+  .prefix("Permission")
+// .middleware(["auth"]);
+
+Route.group(() => {
+  Route.post("create", "RoleController.createRole");
+  Route.post("update", "RoleController.updateRole");
+  Route.route("fetch", "RoleController.fetchRoles", ["GET", "POST"]);
+  Route.post("delete", "RoleController.removeRole");
+  // Route.post("createrole", "RoleController.createOrganizationRole");
+  // Route.route("fetchorganizationroles","RoleController.fetchOrganizationRoles",["GET", "POST"]);
+
+  Route.route("getrole", "RoleController.getRole", ["GET", "POST"]);
+})
+  .prefix("Role")
