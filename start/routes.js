@@ -24,24 +24,13 @@ Route.get('/', () => {
 Route.group(() => {
   Route.post("create", "UserController.createUser");
   Route.post("login", "UserController.login");
-
+  Route.post("loginhandler", "UserController.loginHandler");
+  Route.post("initiatepasswordreset", "UserController.initiatePasswordReset");
+  Route.post("resetpassword", "UserController.resetPassword");
+  Route.post("activateaccount", "UserController.activateAccount");
   Route.route("get", "UserController.fetch", ["GET", "POST"]);
 }).prefix("User");
 
-Route.group(() => {
-  Route.post("createcategory", "CategoryController.createCategory");
-  Route.route("getcategory", "CategoryController.getCategory", [
-    "GET",
-    "POST"
-  ]);
-  Route.post("updatecategory", "CategoryController.updateCategory");
-  Route.route("fetchcategory", "CategoryController.fetchCategories", [
-    "GET",
-    "POST"
-  ]);
-  Route.post("deletecategory", "CategoryController.removeCategory");
-
-}).prefix("Category")
 
 Route.group(() => {
   Route.post("create", "PermissionGroupController.createGroup");
@@ -61,7 +50,7 @@ Route.group(() => {
   Route.post("delete", "PermissionGroupController.removeGroup");
 })
   .prefix("PermissionGroups")
-//.middleware(["auth"]);
+  .middleware(["auth"]);
 
 Route.group(() => {
   Route.post("create", "PermissionController.createPermission");
@@ -81,7 +70,7 @@ Route.group(() => {
   Route.post("delete", "PermissionController.removePermission");
 })
   .prefix("Permission")
-// .middleware(["auth"]);
+  .middleware(["auth"]);
 
 Route.group(() => {
   Route.post("create", "RoleController.createRole");
@@ -94,3 +83,4 @@ Route.group(() => {
   Route.route("getrole", "RoleController.getRole", ["GET", "POST"]);
 })
   .prefix("Role")
+  .middleware(["auth"]);

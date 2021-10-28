@@ -222,6 +222,7 @@ class PermissionController {
         }
     } //removePermission
 
+
     async getPermission({ request, response }) {
         const data = request.all();
 

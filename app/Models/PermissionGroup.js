@@ -56,7 +56,9 @@ class PermissionGroup extends Model {
     } //removeGroup
 
     static async getGroups(fetch_data) {
+
         const groups = await this.query()
+
             .where(fetch_data)
             .with("Permissions")
             .fetch();
@@ -66,11 +68,11 @@ class PermissionGroup extends Model {
 
     static async getGroup(PermissionGroupID) {
         const group = await this.find(PermissionGroupID);
-
         group.Permissions = await group.Permissions().fetch();
 
         return group;
     }
+
 }
 
 module.exports = PermissionGroup

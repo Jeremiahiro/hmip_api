@@ -1,8 +1,8 @@
-'use strict'
+"use strict";
+
 const uuidv1 = require("uuid/v1");
 
-/** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
-const Model = use('Model')
+const Model = use("Model");
 
 class Permission extends Model {
   static get table() {
@@ -61,4 +61,4 @@ class Permission extends Model {
   }
 }
 
-module.exports = Permission
+module.exports = Permission;

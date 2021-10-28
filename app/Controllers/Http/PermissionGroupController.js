@@ -227,12 +227,10 @@ class PermissionGroupController {
                 )
             });
         }
-
         const { PermissionGroupID } = data;
 
         try {
-            const group = await PermissionGroup.getGroups(PermissionGroupID);
-
+            const group = await PermissionGroup.getGroup(PermissionGroupID);
             const return_body = {
                 success: true,
                 details: group,

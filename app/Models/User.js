@@ -7,9 +7,7 @@ const _ = require("lodash");
 /** @type {import('@adonisjs/framework/src/Hash')} */
 const Hash = use("Hash");
 const uuidv1 = require("uuid/v1");
-const Category = use("App/Models/Category");
 const Database = use("Database");
-
 
 class User extends Model {
   static get table() {
@@ -64,9 +62,9 @@ class User extends Model {
     return this.hasMany("App/Models/Token");
   }
 
-  Department() {
-    return this.hasOne("App/Models/Department", "DepartmentID", "DepartmentID");
-  }
+  // Department() {
+  //   return this.hasOne("App/Models/Department", "DepartmentID", "DepartmentID");
+  // }
 
   static async createUser(data) {
     await this.guardUserData(data);
@@ -117,7 +115,7 @@ class User extends Model {
   static async getUsers(fetch_data) {
     const Users = await this.query()
       .where(fetch_data)
-      //.with("Department")
+      // .with("Department")
       .fetch();
 
     return Users;
@@ -128,30 +126,6 @@ class User extends Model {
 
     return User;
   }
-
-  static async getDepartmentHODs(data) {
-    let hods = await this.query()
-      .whereRaw(
-        `DepartmentID = '${data.DepartmentID}' AND OrganizationID = '${data.OrganizationID
-        }' AND RoleIDs LIKE '%hod%'`
-      )
-      .fetch();
-
-    return hods;
-  } //getDepartmentHODs
-
-
-  static async getHeadsOfProcurement(data) {
-    let hops = await this.query()
-      .whereRaw(
-        `OrganizationID = '${data.OrganizationID}' AND RoleIDs LIKE '%hop%'`
-      )
-      .fetch();
-
-    return hops;
-  } //getHeadsOfProcurement
-
-
   static async guardUserData(data) {
     //Role Ids must come as a non-empty array
     if (data.RoleIDs) {
@@ -161,17 +135,8 @@ class User extends Model {
     }
   } //guardUserData
 
-  static async getOrganisationUsers(OrganizationID) {
-    const Users = await this.query()
-      .where({
-        OrganizationID,
-        IsEnabled: true
 
-      })
-      .fetch();
 
-    return Users;
-  } //getUsers
 }
 
 module.exports = User;
