@@ -84,3 +84,19 @@ Route.group(() => {
 })
   .prefix("Role")
   .middleware(["auth"]);
+
+  Route.group(() => {
+    Route.post("create", "FeedbackFormController.createFeedback");
+  
+    Route.route("fetch", "FeedbackFormController.fetchFeedbacks", [
+      "GET",
+      "POST"
+    ]);
+  
+    Route.route("get", "FeedbackFormController.getFeedback", [
+      "GET",
+      "POST"
+    ]);
+      })
+    .prefix("FeedbackForm")
+    .middleware(["auth"]);
