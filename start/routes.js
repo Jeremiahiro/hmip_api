@@ -77,9 +77,6 @@ Route.group(() => {
   Route.post("update", "RoleController.updateRole");
   Route.route("fetch", "RoleController.fetchRoles", ["GET", "POST"]);
   Route.post("delete", "RoleController.removeRole");
-  // Route.post("createrole", "RoleController.createOrganizationRole");
-  // Route.route("fetchorganizationroles","RoleController.fetchOrganizationRoles",["GET", "POST"]);
-
   Route.route("getrole", "RoleController.getRole", ["GET", "POST"]);
 })
   .prefix("Role")
@@ -99,4 +96,41 @@ Route.group(() => {
     ]);
       })
     .prefix("FeedbackForm")
-    .middleware(["auth"]);
+
+    Route.group(() => {
+      Route.post("create", "NmmipColumnHeaderController.createNmmipColumnHeader");
+    
+      Route.route("fetch", "NmmipColumnHeaderController.fetchNmmipColumnHeaders", [
+        "GET",
+        "POST"
+      ]);
+    
+      Route.route("get", "NmmipColumnHeaderController.getNmmipColumnHeader", [
+        "GET",
+        "POST"
+      ]);
+      Route.post("update", "NmmipColumnHeaderController.updateNmmipColumnHeader");
+      Route.delete("delete", "NmmipColumnHeaderController.removeNmmipColumnHeader");
+     })
+        
+      .prefix("NmmipColumnHeader")
+      .middleware(["auth"]);
+
+      Route.group(() => {
+        Route.post("create", "NmmipDataGroupController.createNmmipDataGroup");
+      
+        Route.route("fetch", "NmmipDataGroupController.fetchNmmipDataGroups", [
+          "GET",
+          "POST"
+        ]);
+      
+        Route.route("get", "NmmipDataGroupController.getNmmipDataGroup", [
+          "GET",
+          "POST"
+        ]);
+        Route.post("update", "NmmipDataGroupController.updateNmmipDataGroup");
+        Route.delete("delete", "NmmipDataGroupController.removeNmmipDataGroup");
+       })
+          
+        .prefix("NmmipDataGroups")
+        //.middleware(["auth"]);

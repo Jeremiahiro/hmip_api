@@ -1,24 +1,21 @@
 'use strict'
-const Logger = use("Logger");
-
 const _ = require("lodash");
 const { validate } = use("Validator");
-const NmmipColumnHeader = use("App/Models/NmmipColumnHeader");
+const NmmipDataGroup = use("App/Models/NmmipDataGroup");
 const ControllerHelpers = use("App/Utility/ControllerHelpers");
-
-class NmmipColumnHeaderController {
-    async createNmmipColumnHeader({ request, response }) {
+class NmmipDataGroupController {
+    async createNmmipDataGroup({ request, response }) {
         const data = request.post();
     
         const rules = {
-            ColumnName: `required|unique:${NmmipColumnHeader.table}`,
-          TableID: "required"
+            DataGroupName: `required|unique:${NmmipDataGroup.table}`,
+            DataGroupParentID: "required"
         };
     
         const messages = {
-          "ColumnName.required": "A column name is required",
-          "ColumnName.unique": "A column with this name already exists",
-          "TableID.required": "Provide a table Id"
+          "DataGroupName.required": "A data group name is required",
+          "DataGroupName.unique": "A data group with this name already exists",
+          "DataGroupParentID.required": "Provide a table Id"
         };
     
         const validation = await validate(data, rules, messages);
@@ -32,14 +29,14 @@ class NmmipColumnHeaderController {
           });
         }
         try {
-          const create_nmmmipColumnHeader= await NmmipColumnHeader.createNmmipColumnHeader(
+          const create_nmmipDataGroup= await NmmipDataGroup.createNmmipDataGroup(
             data
           );
     
           const return_body = {
             success: true,
-            details: create_nmmmipColumnHeader,
-            message: "Nmmip Column Header Successfully Created"
+            details: create_nmmipDataGroup,
+            message: "nmmip Data Group Successfully Created"
           };
     
           response.send(return_body);
@@ -50,18 +47,18 @@ class NmmipColumnHeaderController {
             message: error.toString()
           });
         }
-      } //createNmmipColumnHeader
+      } //createNmmipDataGroup
 
-      async fetchNmmipColumnHeaders({ request, response }) {
+      async fetchNmmipDataGroups({ request, response }) {
         const data = request.all();
     
         try {
-          const nmmipColumnHeaders = await NmmipColumnHeader.getNmmipColumnHeaders(data);
+          const nmmipDataGroups = await NmmipDataGroup.getNmmipDataGroups(data);
     
           const return_body = {
             success: true,
-            details: nmmipColumnHeaders,
-            message: "Nmmip Column Headers Successfully Fetched"
+            details: nmmipDataGroups,
+            message: "nmmip Data Groups Successfully Fetched"
           };
     
           response.send(return_body);
@@ -72,18 +69,18 @@ class NmmipColumnHeaderController {
             message: error.toString()
           });
         }
-      } //fetchNmmipColumnHeaders
+      } //fetchNmmipDataGroups
 
-      async getNmmipColumnHeader({ request, response }) {
+      async getNmmipDataGroup({ request, response }) {
         const data = request.all();
     
         const rules = {
-            ColumnHeaderID: `required|exists:${NmmipColumnHeader.table},id`
+            DataGroupID: `required|exists:${NmmipDataGroup.table},id`
         };
     
         const messages = {
-          "ColumnHeaderID.required": "A Column Header id is required",
-          "ColumnHeaderID.exists": "Column Header does not exist"
+          "DataGroupID.required": "A data group  id is required",
+          "DataGroupID.exists": "data group does not exist"
         };
     
         const validation = await validate(data, rules, messages);
@@ -97,15 +94,15 @@ class NmmipColumnHeaderController {
           });
         }
     
-        const { ColumnHeaderID } = data;
+        const { DataGroupID } = data;
     
         try {
-          const nmmipColumnHeader = await NmmipColumnHeader.getNmmipColumnHeader(ColumnHeaderID);
+          const nmmipDataGroup = await NmmipDataGroup.getNmmipDataGroup(DataGroupID);
     
           const return_body = {
             success: true,
-            details: nmmipColumnHeader,
-            message: "Column Header Successfully Fetched"
+            details: nmmipDataGroup,
+            message: "Data group Successfully Fetched"
           };
     
           response.send(return_body);
@@ -116,18 +113,18 @@ class NmmipColumnHeaderController {
             message: error.toString()
           });
         }
-      } //getNmmipColumnHeader
+      } //getNmmipDataGroup
 
-      async updateNmmipColumnHeader({ request, response }) {
+      async updateNmmipDataGroup({ request, response }) {
         const data = request.post();
     
         const rules = {
-          ColumnHeaderID: `required|exists:${NmmipColumnHeader.table},id`
+          DataGroupID: `required|exists:${NmmipDataGroup.table},id`
         };
     
         const messages = {
-          "ColumnHeaderID.required": "A column header id is required",
-          "ColumnHeaderID.exists": "Column header does not exist"
+          "DataGroupID.required": "A data group  id is required",
+          "DataGroupID.exists": "data group does not exist"
         };
     
         const validation = await validate(data, rules, messages);
@@ -141,24 +138,24 @@ class NmmipColumnHeaderController {
           });
         }
     
-        const { ColumnHeaderID } = data;
+        const { DataGroupID } = data;
     
         //Do not update the primary key
-        delete data.ColumnHeaderID;
+        delete data.DataGroupID;
     
         let return_body;
     
         if (!_.isEmpty(data)) {
           try {
-            const update_nmmipColumnHeader = await NmmipColumnHeader.updateNmmipColumnHeader(
-              { id: ColumnHeaderID },
+            const update_nmmipDataGroup = await NmmipDataGroup.updateNmmipDataGroup(
+              { id: DataGroupID },
               data
             );
     
             return_body = {
               success: true,
-              details: update_nmmipColumnHeader,
-              message: "Column header Successfully Updated"
+              details: update_nmmipDataGroup,
+              message: "Data group Successfully Updated"
             };
     
             response.send(return_body);
@@ -177,18 +174,18 @@ class NmmipColumnHeaderController {
     
           return response.status(400).send(return_body);
         }
-      } //updateNmmipColumnHeader
+      } //updateNmmipDataGroup
     
-      async removeNmmipColumnHeader({ request, response }) {
+      async removeNmmipDataGroup({ request, response }) {
         const data = request.post();
     
         const rules = {
-            ColumnHeaderID: `required|exists:${NmmipColumnHeader.table},id`
+            DataGroupID: `required|exists:${NmmipDataGroup.table},id`
         };
     
         const messages = {
-          "ColumnHeaderID.required": "A Column Header id is required",
-          "ColumnHeaderID.exists": "Column Header does not exist"
+          "DataGroupID.required": "A data group  id is required",
+          "DataGroupID.exists": "data group  does not exist"
         };
     
         const validation = await validate(data, rules, messages);
@@ -202,22 +199,22 @@ class NmmipColumnHeaderController {
           });
         }
     
-        const { ColumnHeaderID } = data;
+        const { DataGroupID } = data;
     
         let return_body;
     
-        const nmmipColumnHeader = await NmmipColumnHeader.find(ColumnHeaderID);
+        const nmmipDataGroup = await NmmipDataGroup.find(DataGroupID);
     
-        if (nmmipColumnHeader) {
+        if (nmmipDataGroup) {
           try {
-            const delete_nmmipColumnHeader = await NmmipColumnHeader.removeNmmipColumnHeader(
-                ColumnHeaderID
+            const delete_nmmipDataGroup = await NmmipDataGroup.removeNmmipDataGroup(
+                DataGroupID
             );
     
             return_body = {
               success: true,
-              details: delete_nmmipColumnHeader,
-              message: "nmmip Column Header Successfully Deleted"
+              details: delete_nmmipDataGroup,
+              message: "nmmip Data Group Successfully Deleted"
             };
     
             response.send(return_body);
@@ -231,13 +228,12 @@ class NmmipColumnHeaderController {
         } else {
           return_body = {
             success: false,
-            message: "nmmip Column Header does not exist"
+            message: "nmmip Data Group does not exist"
           };
     
           return response.status(400).send(return_body);
         }
-      } //removeNmmipColumnHeader
-    
+      } //removeNmmipDataGroup
 }
 
-module.exports = NmmipColumnHeaderController
+module.exports = NmmipDataGroupController

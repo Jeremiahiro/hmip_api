@@ -7,9 +7,10 @@ class NmmipcolumnheadersCreateSchema extends Schema {
   up () {
     this.create('NMMIPColumnHeaders', (table) => {
      // table.uuid("ColumnHeaderID").primary();
-     table.increments("ColumnHeaderID");
+     table.increments();
      table.integer("TableID").nullable();
       table.string('ColumnName', 225).nullable()
+      table.timestamps();
     })
   }
 
