@@ -152,4 +152,4 @@ Route.group(() => {
          })
             
           .prefix("NmmipStates")
-          //.middleware(["auth"]);      
+          .middleware(["auth"]);      
