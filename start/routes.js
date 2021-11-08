@@ -133,4 +133,23 @@ Route.group(() => {
        })
           
         .prefix("NmmipDataGroups")
-        //.middleware(["auth"]);
+        .middleware(["auth"]);
+
+        Route.group(() => {
+          Route.post("create", "NmmipStateController.createNmmipState");
+        
+          Route.route("fetch", "NmmipStateController.fetchNmmipStates", [
+            "GET",
+            "POST"
+          ]);
+        
+          Route.route("get", "NmmipStateController.getNmmipState", [
+            "GET",
+            "POST"
+          ]);
+          Route.post("update", "NmmipStateController.updateNmmipState");
+          Route.delete("delete", "NmmipStateController.removeNmmipState");
+         })
+            
+          .prefix("NmmipStates")
+          //.middleware(["auth"]);      

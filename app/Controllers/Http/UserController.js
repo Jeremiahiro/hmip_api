@@ -6,8 +6,6 @@ const _ = require("lodash");
 const url = require("url");
 const moment = require("moment");
 const { Console } = require("console");
-
-//const { validate } = use("Validator");
 const Database = use('Database');
 
 const { validate, validateAll } = use("Validator");

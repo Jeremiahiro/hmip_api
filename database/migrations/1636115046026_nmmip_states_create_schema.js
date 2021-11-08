@@ -7,6 +7,7 @@ class NmmipStatesCreateSchema extends Schema {
   up () {
     this.create('NmmipStates', (table) => {
       table.increments()
+      table.string('StateName', 250).nullable()
       table.timestamps()
     })
   }
