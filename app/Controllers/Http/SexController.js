@@ -28,6 +28,19 @@ class SexController {
             )
           });
         }
+          //Duplicate check
+          let checkDuplicateSex = await Sex.query()
+          .where({
+              SexName: data.SexName
+          })
+          .first();
+
+      if (checkDuplicateSex) {
+          return response.status(403).send({
+              success: false,
+              message: "A Sex with this name already exists"
+          });
+      }
         try {
           const create_sex= await Sex.createSex(
             data

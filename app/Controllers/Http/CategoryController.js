@@ -1,6 +1,5 @@
 'use strict'
 const Logger = use("Logger");
-
 const _ = require("lodash");
 const { validate } = use("Validator");
 const Category = use("App/Models/Category");

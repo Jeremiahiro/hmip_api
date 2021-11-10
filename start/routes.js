@@ -49,9 +49,9 @@ Route.group(() => {
 
   Route.post("delete", "PermissionGroupController.removeGroup");
 })
-  .prefix("PermissionGroups")
-  .middleware(["auth"]);
-
+.prefix("PermissionGroups")
+.middleware(["auth"]);
+//PermissionGroups
 Route.group(() => {
   Route.post("create", "PermissionController.createPermission");
 
@@ -69,9 +69,9 @@ Route.group(() => {
 
   Route.post("delete", "PermissionController.removePermission");
 })
-  .prefix("Permission")
-  .middleware(["auth"]);
-
+.prefix("Permission")
+.middleware(["auth"]);
+//Permission
 Route.group(() => {
   Route.post("create", "RoleController.createRole");
   Route.post("update", "RoleController.updateRole");
@@ -79,10 +79,11 @@ Route.group(() => {
   Route.post("delete", "RoleController.removeRole");
   Route.route("getrole", "RoleController.getRole", ["GET", "POST"]);
 })
-  .prefix("Role")
-  .middleware(["auth"]);
+.prefix("Role")
+.middleware(["auth"]);
+// Role
 
-  Route.group(() => {
+Route.group(() => {
     Route.post("create", "FeedbackFormController.createFeedback");
   
     Route.route("fetch", "FeedbackFormController.fetchFeedbacks", [
@@ -94,10 +95,10 @@ Route.group(() => {
       "GET",
       "POST"
     ]);
-      })
-    .prefix("FeedbackForm")
-
-    Route.group(() => {
+})
+.prefix("FeedbackForm")
+// FeedbackForm
+Route.group(() => {
       Route.post("create", "NmmipColumnHeaderController.createNmmipColumnHeader");
     
       Route.route("fetch", "NmmipColumnHeaderController.fetchNmmipColumnHeaders", [
@@ -111,12 +112,11 @@ Route.group(() => {
       ]);
       Route.post("update", "NmmipColumnHeaderController.updateNmmipColumnHeader");
       Route.delete("delete", "NmmipColumnHeaderController.removeNmmipColumnHeader");
-     })
-        
-      .prefix("NmmipColumnHeader")
-      .middleware(["auth"]);
+})
+.prefix("NmmipColumnHeader")
+.middleware(["auth"]);
 
-      Route.group(() => {
+Route.group(() => {
         Route.post("create", "NmmipDataGroupController.createNmmipDataGroup");
       
         Route.route("fetch", "NmmipDataGroupController.fetchNmmipDataGroups", [
@@ -130,12 +130,11 @@ Route.group(() => {
         ]);
         Route.post("update", "NmmipDataGroupController.updateNmmipDataGroup");
         Route.delete("delete", "NmmipDataGroupController.removeNmmipDataGroup");
-       })
-          
-        .prefix("NmmipDataGroups")
-        .middleware(["auth"]);
+})
+.prefix("NmmipDataGroups")
+.middleware(["auth"]);
 
-        Route.group(() => {
+Route.group(() => {
           Route.post("create", "NmmipStateController.createNmmipState");
         
           Route.route("fetch", "NmmipStateController.fetchNmmipStates", [
@@ -149,26 +148,44 @@ Route.group(() => {
           ]);
           Route.post("update", "NmmipStateController.updateNmmipState");
           Route.delete("delete", "NmmipStateController.removeNmmipState");
-         })
-            
-          .prefix("NmmipStates")
-          .middleware(["auth"]);      
+})
+.prefix("NmmipStates")
+.middleware(["auth"]);      
     
-          Route.group(() => {
-              Route.post("create", "SexController.createSex");
+Route.group(() => {
+Route.post("create", "SexController.createSex");
             
-              Route.route("fetch", "SexController.fetchSexes", [
-                "GET",
-                "POST"
-              ]);
+Route.route("fetch", "SexController.fetchSexes", [
+"GET",
+"POST"
+]);
             
-              Route.route("get", "SexController.getSex", [
-                "GET",
-                "POST"
-              ]);
-              Route.post("update", "SexController.updateSex");
-              Route.delete("delete", "SexController.removeSex");
-             })
-                
-              .prefix("Sex")
-              //.middleware(["auth"]); 
+Route.route("get", "SexController.getSex", [
+"GET",
+"POST"
+]);
+Route.post("update", "SexController.updateSex");
+Route.delete("delete", "SexController.removeSex");
+})            
+.prefix("Sex")
+.middleware(["auth"]); 
+//Sex
+
+Route.group(() => {
+  Route.post("create", "EmploymentSectorController.createEmploymentSector");
+              
+  Route.route("fetch", "EmploymentSectorController.fetchEmploymentSectors", [
+  "GET",
+  "POST"
+  ]);
+              
+  Route.route("get", "EmploymentSectorController.getEmploymentSector", [
+  "GET",
+  "POST"
+  ]);
+  Route.post("update", "EmploymentSectorController.updateEmploymentSector");
+  Route.delete("delete", "EmploymentSectorController.removeEmploymentSector");
+  })            
+.prefix("EmploymentSector")
+.middleware(["auth"]); 
+  

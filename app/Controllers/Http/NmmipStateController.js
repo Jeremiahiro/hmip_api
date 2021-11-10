@@ -28,6 +28,19 @@ class NmmipStateController {
             )
           });
         }
+         //Duplicate check
+         let checkDuplicateState = await NmmipState.query()
+         .where({
+             StateName: data.StateName
+         })
+         .first();
+
+     if (checkDuplicateState) {
+         return response.status(403).send({
+             success: false,
+             message: "A State with this name already exists"
+         });
+     }
         try {
           const create_nmmipState= await NmmipState.createNmmipState(
             data

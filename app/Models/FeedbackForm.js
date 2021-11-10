@@ -5,8 +5,6 @@ const Model = use('Model')
 const Database = use("Database");
 const _ = require("lodash");
 const uuidv1 = require("uuid/v1");
-const uuidv4 = require("uuid/v4");
-
 
 class FeedbackForm extends Model {
     static get table() {
