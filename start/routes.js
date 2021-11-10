@@ -114,7 +114,7 @@ Route.group(() => {
       Route.delete("delete", "NmmipColumnHeaderController.removeNmmipColumnHeader");
 })
 .prefix("NmmipColumnHeader")
-.middleware(["auth"]);
+//.middleware(["auth"]);
 
 Route.group(() => {
         Route.post("create", "NmmipDataGroupController.createNmmipDataGroup");
@@ -132,7 +132,7 @@ Route.group(() => {
         Route.delete("delete", "NmmipDataGroupController.removeNmmipDataGroup");
 })
 .prefix("NmmipDataGroups")
-.middleware(["auth"]);
+//.middleware(["auth"]);
 
 Route.group(() => {
           Route.post("create", "NmmipStateController.createNmmipState");
@@ -187,5 +187,5 @@ Route.group(() => {
   Route.delete("delete", "EmploymentSectorController.removeEmploymentSector");
   })            
 .prefix("EmploymentSector")
-.middleware(["auth"]); 
+//.middleware(["auth"]); 
   
