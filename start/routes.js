@@ -153,3 +153,22 @@ Route.group(() => {
             
           .prefix("NmmipStates")
           .middleware(["auth"]);      
+    
+          Route.group(() => {
+              Route.post("create", "SexController.createSex");
+            
+              Route.route("fetch", "SexController.fetchSexes", [
+                "GET",
+                "POST"
+              ]);
+            
+              Route.route("get", "SexController.getSex", [
+                "GET",
+                "POST"
+              ]);
+              Route.post("update", "SexController.updateSex");
+              Route.delete("delete", "SexController.removeSex");
+             })
+                
+              .prefix("Sex")
+              //.middleware(["auth"]); 
