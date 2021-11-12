@@ -168,7 +168,7 @@ Route.post("update", "SexController.updateSex");
 Route.delete("delete", "SexController.removeSex");
 })            
 .prefix("Sex")
-//.middleware(["auth"]); 
+.middleware(["auth"]); 
 //Sex
 
 Route.group(() => {
@@ -187,5 +187,38 @@ Route.group(() => {
   Route.delete("delete", "EmploymentSectorController.removeEmploymentSector");
   })            
 .prefix("EmploymentSector")
-//.middleware(["auth"]); 
-  
+.middleware(["auth"]); 
+Route.group(() => {
+  Route.post("create", "EmploymentStatusController.createEmploymentStatus");
+              
+  Route.route("fetch", "EmploymentStatusController.fetchEmploymentStatuses", [
+  "GET",
+  "POST"
+  ]);
+              
+  Route.route("get", "EmploymentStatusController.getEmploymentStatus", [
+  "GET",
+  "POST"
+  ]);
+  Route.post("update", "EmploymentStatusController.updateEmploymentStatus");
+  Route.delete("delete", "EmploymentStatusController.removeEmploymentStatus");
+  })            
+.prefix("EmploymentStatus")
+.middleware(["auth"]); 
+Route.group(() => {
+  Route.post("create", "OwnershipTypeController.createOwnershipType");
+              
+  Route.route("fetch", "OwnershipTypeController.fetchOwnershipTypes", [
+  "GET",
+  "POST"
+  ]);
+  Route.post("update", "OwnershipTypeController.updateOwnershipType");
+     
+  Route.route("get", "OwnershipTypeController.getOwnershipType", [
+  "GET",
+  "POST"
+  ]);
+  Route.delete("delete", "OwnershipTypeController.removeOwnershipType");
+  })            
+.prefix("OwnershipType")
+.middleware(["auth"]);
