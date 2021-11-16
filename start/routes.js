@@ -205,6 +205,7 @@ Route.group(() => {
   })            
 .prefix("EmploymentStatus")
 .middleware(["auth"]); 
+
 Route.group(() => {
   Route.post("create", "OwnershipTypeController.createOwnershipType");
               
@@ -222,3 +223,21 @@ Route.group(() => {
   })            
 .prefix("OwnershipType")
 .middleware(["auth"]);
+
+Route.group(() => {
+  Route.post("create", "PropertyTypeController.createPropertyType");
+              
+  Route.route("fetch", "PropertyTypeController.fetchPropertyTypes", [
+  "GET",
+  "POST"
+  ]);
+  Route.post("update", "PropertyTypeController.updatePropertyType");
+     
+  Route.route("get", "PropertyTypeController.getPropertyType", [
+  "GET",
+  "POST"
+  ]);
+  Route.delete("delete", "PropertyTypeController.removePropertyType");
+  })            
+.prefix("PropertyType")
+//.middleware(["auth"]);
