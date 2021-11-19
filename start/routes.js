@@ -240,4 +240,20 @@ Route.group(() => {
   Route.delete("delete", "PropertyTypeController.removePropertyType");
   })            
 .prefix("PropertyType")
-//.middleware(["auth"]);
+.middleware(["auth"]);
+
+Route.group(() => {
+  Route.post("create", "QuestionnaireController.createQuestionnaire");
+              
+  Route.route("fetch", "QuestionnaireController.fetchQuestionnaires", [
+  "GET",
+  "POST"
+  ]);     
+  Route.route("get", "QuestionnaireController.getQuestionnaire", [
+  "GET",
+  "POST"
+  ]);
+  Route.delete("delete", "QuestionnaireController.removeQuestionnaire");
+  })            
+.prefix("Questionnaire")
+.middleware(["auth"]);
