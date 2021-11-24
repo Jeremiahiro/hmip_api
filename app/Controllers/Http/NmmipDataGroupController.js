@@ -4,6 +4,7 @@ const { validate } = use("Validator");
 const NmmipDataGroup = use("App/Models/NmmipDataGroup");
 const ControllerHelpers = use("App/Utility/ControllerHelpers");
 class NmmipDataGroupController {
+  
     async createNmmipDataGroup({ request, response }) {
         const data = request.post();
     

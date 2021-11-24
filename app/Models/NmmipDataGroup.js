@@ -9,7 +9,9 @@ class NmmipDataGroup extends Model {
     static get table() {
         return "NmmipDataGroups";
       }
-    
+      static get primaryKey() {
+        return "id";
+      }
       static async createNmmipDataGroup(data) {
         const NmmipDataGroup = await this.create(data);
     

@@ -2,21 +2,21 @@
 const _ = require("lodash");
 const Logger = use("Logger");
 const { validate } = use("Validator");
-const NmmipState = use("App/Models/NmmipState");
+const NmmipMDAsInNigeria = use("App/Models/NmmipMDAsInNigeria");
 const ControllerHelpers = use("App/Utility/ControllerHelpers");
 
-class NmmipStateController {
-  
-    async createNmmipState({ request, response }) {
+class NmmipMdAsInNigeriaController {
+
+    async createNmmipMDAsInNigeria({ request, response }) {
         const data = request.post();
     
         const rules = {
-            StateName: `required|unique:${NmmipState.table}`
+            MDAName: `required|unique:${NmmipMDAsInNigeria.table}`
                 };
     
         const messages = {
-          "StateName.required": "A state name is required",
-          "StateName.unique": "A state with this name already exists"
+          "MDAName.required": "A state name is required",
+          "MDAName.unique": "A state with this name already exists"
         };
     
         const validation = await validate(data, rules, messages);
@@ -30,27 +30,27 @@ class NmmipStateController {
           });
         }
          //Duplicate check
-         let checkDuplicateState = await NmmipState.query()
+         let checkDuplicateState = await NmmipMDAsInNigeria.query()
          .where({
-             StateName: data.StateName
+             MDAName: data.MDAName
          })
          .first();
 
      if (checkDuplicateState) {
          return response.status(403).send({
              success: false,
-             message: "A State with this name already exists"
+             message: "An MDA with this name already exists"
          });
      }
         try {
-          const create_nmmipState= await NmmipState.createNmmipState(
+          const create_nmmipMDAsInNigeria= await NmmipMDAsInNigeria.createNmmipMDAsInNigeria(
             data
           );
     
           const return_body = {
             success: true,
-            details: create_nmmipState,
-            message: "nmmip State Successfully Created"
+            details: create_nmmipMDAsInNigeria,
+            message: "nmmip MDAs In Nigeria Successfully Created"
           };
     
           response.send(return_body);
@@ -61,18 +61,18 @@ class NmmipStateController {
             message: error.toString()
           });
         }
-      } //createNmmipState
+      } //createNmmipMDAsInNigeria
 
-    async fetchNmmipStates({ request, response }) {
+    async fetchNmmipMDAsInNigerias({ request, response }) {
         const data = request.all();
     
         try {
-          const nmmipStates = await NmmipState.getNmmipStates(data);
+          const nmmipMDAsInNigerias = await NmmipMDAsInNigeria.getNmmipMDAsInNigerias(data);
     
           const return_body = {
             success: true,
-            details: nmmipStates,
-            message: "nmmip States Successfully Fetched"
+            details: nmmipMDAsInNigerias,
+            message: "nmmip MDAs In Nigerias Successfully Fetched"
           };
     
           response.send(return_body);
@@ -83,18 +83,18 @@ class NmmipStateController {
             message: error.toString()
           });
         }
-      } //fetchNmmipStates
+      } //fetchNmmipMDAsInNigerias
 
-    async getNmmipState({ request, response }) {
+    async getNmmipMDAsInNigeria({ request, response }) {
         const data = request.all();
     
         const rules = {
-            StateID: `required|exists:${NmmipState.table},id`
+            MDAID: `required|exists:${NmmipMDAsInNigeria.table},id`
         };
     
         const messages = {
-          "StateID.required": "A state id is required",
-          "StateID.exists": "state does not exist"
+          "MDAID.required": "A state id is required",
+          "MDAID.exists": "state does not exist"
         };
     
         const validation = await validate(data, rules, messages);
@@ -108,15 +108,15 @@ class NmmipStateController {
           });
         }
     
-        const { StateID } = data;
+        const { MDAID } = data;
     
         try {
-          const nmmipstate = await NmmipState.getNmmipState(StateID);
+          const nmmipstate = await NmmipMDAsInNigeria.getNmmipMDAsInNigeria(MDAID);
     
           const return_body = {
             success: true,
             details: nmmipstate,
-            message: "State Successfully Fetched"
+            message: "MDA Successfully Fetched"
           };
     
           response.send(return_body);
@@ -127,18 +127,18 @@ class NmmipStateController {
             message: error.toString()
           });
         }
-      } //getNmmipState
+      } //getNmmipMDAsInNigeria
 
-    async updateNmmipState({ request, response }) {
+    async updateNmmipMDAsInNigeria({ request, response }) {
         const data = request.post();
     
         const rules = {
-          StateID: `required|exists:${NmmipState.table},id`
+          MDAID: `required|exists:${NmmipMDAsInNigeria.table},id`
         };
     
         const messages = {
-          "StateID.required": "A State  id is required",
-          "StateID.exists": "State does not exist"
+          "MDAID.required": "A MDA  id is required",
+          "MDAID.exists": "MDA does not exist"
         };
     
         const validation = await validate(data, rules, messages);
@@ -152,24 +152,24 @@ class NmmipStateController {
           });
         }
     
-        const { StateID } = data;
+        const { MDAID } = data;
     
         //Do not update the primary key
-        delete data.StateID;
+        delete data.MDAID;
     
         let return_body;
     
         if (!_.isEmpty(data)) {
           try {
-            const update_nmmipState = await NmmipState.updateNmmipState(
-              { id: StateID },
+            const update_nmmipMDAsInNigeria = await NmmipMDAsInNigeria.updateNmmipMDAsInNigeria(
+              { id: MDAID },
               data
             );
     
             return_body = {
               success: true,
-              details: update_nmmipState,
-              message: "State Successfully Updated"
+              details: update_nmmipMDAsInNigeria,
+              message: "MDA Successfully Updated"
             };
     
             response.send(return_body);
@@ -188,18 +188,18 @@ class NmmipStateController {
     
           return response.status(400).send(return_body);
         }
-      } //updateNmmipState
+      } //updateNmmipMDAsInNigeria
     
-    async removeNmmipState({ request, response }) {
+    async removeNmmipMDAsInNigeria({ request, response }) {
         const data = request.post();
     
         const rules = {
-            StateID: `required|exists:${NmmipState.table},id`
+            MDAID: `required|exists:${NmmipMDAsInNigeria.table},id`
         };
     
         const messages = {
-          "StateID.required": "A state  id is required",
-          "StateID.exists": "State  does not exist"
+          "MDAID.required": "A state  id is required",
+          "MDAID.exists": "MDA  does not exist"
         };
     
         const validation = await validate(data, rules, messages);
@@ -213,22 +213,22 @@ class NmmipStateController {
           });
         }
     
-        const { StateID } = data;
+        const { MDAID } = data;
     
         let return_body;
     
-        const nmmipstate = await NmmipState.find(StateID);
+        const nmmipstate = await NmmipMDAsInNigeria.find(MDAID);
     
         if (nmmipstate) {
           try {
-            const delete_nmmipState = await NmmipState.removeNmmipState(
-                StateID
+            const delete_nmmipMDAsInNigeria = await NmmipMDAsInNigeria.removeNmmipMDAsInNigeria(
+                MDAID
             );
     
             return_body = {
               success: true,
-              details: delete_nmmipState,
-              message: "nmmip State Successfully Deleted"
+              details: delete_nmmipMDAsInNigeria,
+              message: "nmmip MDAs In Nigeria Successfully Deleted"
             };
     
             response.send(return_body);
@@ -242,12 +242,12 @@ class NmmipStateController {
         } else {
           return_body = {
             success: false,
-            message: "nmmip State does not exist"
+            message: "nmmip MDAs In Nigeria does not exist"
           };
     
           return response.status(400).send(return_body);
         }
-      } //removeNmmipState
+      } //removeNmmipMDAsInNigeria
 }
 
-module.exports = NmmipStateController
+module.exports = NmmipMdAsInNigeriaController

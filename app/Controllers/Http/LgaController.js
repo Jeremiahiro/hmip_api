@@ -2,97 +2,23 @@
 const _ = require("lodash");
 const Logger = use("Logger");
 const { validate } = use("Validator");
+const Lga = use("App/Models/Lga");
 const NmmipState = use("App/Models/NmmipState");
 const ControllerHelpers = use("App/Utility/ControllerHelpers");
 
-class NmmipStateController {
-  
-    async createNmmipState({ request, response }) {
+class LgaController {
+
+    async createLga({ request, response }) {
         const data = request.post();
     
         const rules = {
-            StateName: `required|unique:${NmmipState.table}`
+            LgaName: `required|unique:${Lga.table}`,
+            StateID: `required|exists:${NmmipState.table},id`
                 };
     
         const messages = {
-          "StateName.required": "A state name is required",
-          "StateName.unique": "A state with this name already exists"
-        };
-    
-        const validation = await validate(data, rules, messages);
-    
-        if (validation.fails()) {
-          return response.status(400).send({
-            success: false,
-            message: ControllerHelpers.extractValidationErrorMessages(
-              validation.messages()
-            )
-          });
-        }
-         //Duplicate check
-         let checkDuplicateState = await NmmipState.query()
-         .where({
-             StateName: data.StateName
-         })
-         .first();
-
-     if (checkDuplicateState) {
-         return response.status(403).send({
-             success: false,
-             message: "A State with this name already exists"
-         });
-     }
-        try {
-          const create_nmmipState= await NmmipState.createNmmipState(
-            data
-          );
-    
-          const return_body = {
-            success: true,
-            details: create_nmmipState,
-            message: "nmmip State Successfully Created"
-          };
-    
-          response.send(return_body);
-        } catch (error) {
-          Logger.error("Error : ", error);
-          return response.status(500).send({
-            success: false,
-            message: error.toString()
-          });
-        }
-      } //createNmmipState
-
-    async fetchNmmipStates({ request, response }) {
-        const data = request.all();
-    
-        try {
-          const nmmipStates = await NmmipState.getNmmipStates(data);
-    
-          const return_body = {
-            success: true,
-            details: nmmipStates,
-            message: "nmmip States Successfully Fetched"
-          };
-    
-          response.send(return_body);
-        } catch (error) {
-          Logger.error("Error : ", error);
-          return response.status(500).send({
-            success: false,
-            message: error.toString()
-          });
-        }
-      } //fetchNmmipStates
-
-    async getNmmipState({ request, response }) {
-        const data = request.all();
-    
-        const rules = {
-            StateID: `required|exists:${NmmipState.table},id`
-        };
-    
-        const messages = {
+          "LgaName.required": "An lga name is required",
+          "LgaName.unique": "An lga with this name already exists",
           "StateID.required": "A state id is required",
           "StateID.exists": "state does not exist"
         };
@@ -107,16 +33,28 @@ class NmmipStateController {
             )
           });
         }
-    
-        const { StateID } = data;
-    
+         //Duplicate check
+         let checkDuplicateLga = await Lga.query()
+         .where({
+             LgaName: data.LgaName
+         })
+         .first();
+
+     if (checkDuplicateLga) {
+         return response.status(403).send({
+             success: false,
+             message: "A Lga with this name already exists"
+         });
+     }
         try {
-          const nmmipstate = await NmmipState.getNmmipState(StateID);
+          const create_lga= await Lga.createLga(
+            data
+          );
     
           const return_body = {
             success: true,
-            details: nmmipstate,
-            message: "State Successfully Fetched"
+            details: create_lga,
+            message: "lga Successfully Created"
           };
     
           response.send(return_body);
@@ -127,18 +65,40 @@ class NmmipStateController {
             message: error.toString()
           });
         }
-      } //getNmmipState
+      } //createLga
 
-    async updateNmmipState({ request, response }) {
-        const data = request.post();
+    async fetchLgas({ request, response }) {
+        const data = request.all();
+    
+        try {
+          const lgas = await Lga.getLgas(data);
+    
+          const return_body = {
+            success: true,
+            details: lgas,
+            message: "lgas Successfully Fetched"
+          };
+    
+          response.send(return_body);
+        } catch (error) {
+          Logger.error("Error : ", error);
+          return response.status(500).send({
+            success: false,
+            message: error.toString()
+          });
+        }
+      } //fetchLgas
+
+    async getLga({ request, response }) {
+        const data = request.all();
     
         const rules = {
-          StateID: `required|exists:${NmmipState.table},id`
+            LgaID: `required|exists:${Lga.table},id`
         };
     
         const messages = {
-          "StateID.required": "A State  id is required",
-          "StateID.exists": "State does not exist"
+          "LgaID.required": "An lga id is required",
+          "LgaID.exists": "lga does not exist"
         };
     
         const validation = await validate(data, rules, messages);
@@ -152,24 +112,68 @@ class NmmipStateController {
           });
         }
     
-        const { StateID } = data;
+        const { LgaID } = data;
+    
+        try {
+          const lga = await Lga.getLga(LgaID);
+    
+          const return_body = {
+            success: true,
+            details: lga,
+            message: "Lga Successfully Fetched"
+          };
+    
+          response.send(return_body);
+        } catch (error) {
+          Logger.error("Error : ", error);
+          return response.status(500).send({
+            success: false,
+            message: error.toString()
+          });
+        }
+      } //getLga
+
+    async updateLga({ request, response }) {
+        const data = request.post();
+    
+        const rules = {
+          LgaID: `required|exists:${Lga.table},id`
+        };
+    
+        const messages = {
+          "LgaID.required": "A Lga  id is required",
+          "LgaID.exists": "Lga does not exist"
+        };
+    
+        const validation = await validate(data, rules, messages);
+    
+        if (validation.fails()) {
+          return response.status(400).send({
+            success: false,
+            message: ControllerHelpers.extractValidationErrorMessages(
+              validation.messages()
+            )
+          });
+        }
+    
+        const { LgaID } = data;
     
         //Do not update the primary key
-        delete data.StateID;
+        delete data.LgaID;
     
         let return_body;
     
         if (!_.isEmpty(data)) {
           try {
-            const update_nmmipState = await NmmipState.updateNmmipState(
-              { id: StateID },
+            const update_lga = await Lga.updateLga(
+              { id: LgaID },
               data
             );
     
             return_body = {
               success: true,
-              details: update_nmmipState,
-              message: "State Successfully Updated"
+              details: update_lga,
+              message: "Lga Successfully Updated"
             };
     
             response.send(return_body);
@@ -188,18 +192,18 @@ class NmmipStateController {
     
           return response.status(400).send(return_body);
         }
-      } //updateNmmipState
+      } //updateLga
     
-    async removeNmmipState({ request, response }) {
+    async removeLga({ request, response }) {
         const data = request.post();
     
         const rules = {
-            StateID: `required|exists:${NmmipState.table},id`
+            LgaID: `required|exists:${Lga.table},id`
         };
     
         const messages = {
-          "StateID.required": "A state  id is required",
-          "StateID.exists": "State  does not exist"
+          "LgaID.required": "A lga  id is required",
+          "LgaID.exists": "Lga  does not exist"
         };
     
         const validation = await validate(data, rules, messages);
@@ -213,22 +217,22 @@ class NmmipStateController {
           });
         }
     
-        const { StateID } = data;
+        const { LgaID } = data;
     
         let return_body;
     
-        const nmmipstate = await NmmipState.find(StateID);
+        const lga = await Lga.find(LgaID);
     
-        if (nmmipstate) {
+        if (lga) {
           try {
-            const delete_nmmipState = await NmmipState.removeNmmipState(
-                StateID
+            const delete_lga = await Lga.removeLga(
+                LgaID
             );
     
             return_body = {
               success: true,
-              details: delete_nmmipState,
-              message: "nmmip State Successfully Deleted"
+              details: delete_lga,
+              message: "lga Successfully Deleted"
             };
     
             response.send(return_body);
@@ -242,12 +246,12 @@ class NmmipStateController {
         } else {
           return_body = {
             success: false,
-            message: "nmmip State does not exist"
+            message: "lga does not exist"
           };
     
           return response.status(400).send(return_body);
         }
-      } //removeNmmipState
+      } //removeLga
 }
 
-module.exports = NmmipStateController
+module.exports = LgaController

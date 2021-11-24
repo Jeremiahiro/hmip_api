@@ -2,21 +2,38 @@
 const _ = require("lodash");
 const Logger = use("Logger");
 const { validate } = use("Validator");
-const NmmipState = use("App/Models/NmmipState");
+const NmmipIndicator = use("App/Models/NmmipIndicator");
+const NmmipIndicatorView = use("App/Models/NmmipIndicatorView");
+const NmmipTable = use("App/Models/NmmipTable");
 const ControllerHelpers = use("App/Utility/ControllerHelpers");
+class NmmipIndicatorViewController {
 
-class NmmipStateController {
-  
-    async createNmmipState({ request, response }) {
+    async createNmmipIndicatorView({ request, response }) {
         const data = request.post();
     
         const rules = {
-            StateName: `required|unique:${NmmipState.table}`
-                };
+            IndicatorID: `required|exists:${NmmipIndicator.table},id`,
+            TableID: `required|exists:${NmmipTable.table},id`,
+            TableOrViewName: `required|unique:${NmmipIndicatorView.table}`,
+            SummaryTableOrViewName: "required",
+            IsViewOrTable: "required",
+            TotalNumberOfRespondents:"required",
+
+
+        };
     
         const messages = {
-          "StateName.required": "A state name is required",
-          "StateName.unique": "A state with this name already exists"
+          
+          "IndicatorID.required": "Provide an indicator Id",
+          "IndicatorID.exists": "Indicator does not exist",
+          "TableID.required": "A table id is required",
+          "TableID.exists": "table id does not exist",
+          "TableOrViewName.required": "An Table or View name is required",
+          "TableOrViewName.unique": "An Table or View with this name already exists",
+          "SummaryTableOrViewName.required": "A summary Table or View name is required",
+          "IsViewOrTable.required": "Is table or view",
+          "TotalNumberOfRespondents.required":"The Total number of respondents is required"
+
         };
     
         const validation = await validate(data, rules, messages);
@@ -29,28 +46,15 @@ class NmmipStateController {
             )
           });
         }
-         //Duplicate check
-         let checkDuplicateState = await NmmipState.query()
-         .where({
-             StateName: data.StateName
-         })
-         .first();
-
-     if (checkDuplicateState) {
-         return response.status(403).send({
-             success: false,
-             message: "A State with this name already exists"
-         });
-     }
         try {
-          const create_nmmipState= await NmmipState.createNmmipState(
+          const create_nmmipIndicatorView = await NmmipIndicatorView.createNmmipIndicatorView(
             data
           );
     
           const return_body = {
             success: true,
-            details: create_nmmipState,
-            message: "nmmip State Successfully Created"
+            details: create_nmmipIndicatorView,
+            message: "nmmip Indicator View Successfully Created"
           };
     
           response.send(return_body);
@@ -61,18 +65,18 @@ class NmmipStateController {
             message: error.toString()
           });
         }
-      } //createNmmipState
+      } //createNmmipIndicatorView
 
-    async fetchNmmipStates({ request, response }) {
+      async fetchNmmipIndicatorViews({ request, response }) {
         const data = request.all();
     
         try {
-          const nmmipStates = await NmmipState.getNmmipStates(data);
+          const nmmipIndicatorViews = await NmmipIndicatorView.getNmmipIndicatorViews(data);
     
           const return_body = {
             success: true,
-            details: nmmipStates,
-            message: "nmmip States Successfully Fetched"
+            details: nmmipIndicatorViews,
+            message: "nmmip Indicator views Successfully Fetched"
           };
     
           response.send(return_body);
@@ -83,18 +87,18 @@ class NmmipStateController {
             message: error.toString()
           });
         }
-      } //fetchNmmipStates
+      } //fetchNmmipIndicatorViews
 
-    async getNmmipState({ request, response }) {
+      async getNmmipIndicatorView({ request, response }) {
         const data = request.all();
     
         const rules = {
-            StateID: `required|exists:${NmmipState.table},id`
+            IndicatorViewID: `required|exists:${NmmipIndicatorView.table},id`
         };
     
         const messages = {
-          "StateID.required": "A state id is required",
-          "StateID.exists": "state does not exist"
+          "IndicatorViewID.required": "An Indicator View id is required",
+          "IndicatorViewID.exists": "Indicator View does not exist"
         };
     
         const validation = await validate(data, rules, messages);
@@ -108,15 +112,15 @@ class NmmipStateController {
           });
         }
     
-        const { StateID } = data;
+        const { IndicatorViewID } = data;
     
         try {
-          const nmmipstate = await NmmipState.getNmmipState(StateID);
+          const nmmipIndicatorView = await NmmipIndicatorView.getNmmipIndicatorView(IndicatorViewID);
     
           const return_body = {
             success: true,
-            details: nmmipstate,
-            message: "State Successfully Fetched"
+            details: nmmipIndicatorView,
+            message: "Indicator View Successfully Fetched"
           };
     
           response.send(return_body);
@@ -127,18 +131,18 @@ class NmmipStateController {
             message: error.toString()
           });
         }
-      } //getNmmipState
+      } //getNmmipIndicatorView
 
-    async updateNmmipState({ request, response }) {
+      async updateNmmipIndicatorView({ request, response }) {
         const data = request.post();
     
         const rules = {
-          StateID: `required|exists:${NmmipState.table},id`
+          IndicatorViewID: `required|exists:${NmmipIndicatorView.table},id`
         };
     
         const messages = {
-          "StateID.required": "A State  id is required",
-          "StateID.exists": "State does not exist"
+          "IndicatorViewID.required": "An Indicator View id is required",
+          "IndicatorViewID.exists": "Indicator View does not exist"
         };
     
         const validation = await validate(data, rules, messages);
@@ -152,24 +156,24 @@ class NmmipStateController {
           });
         }
     
-        const { StateID } = data;
+        const { IndicatorViewID } = data;
     
         //Do not update the primary key
-        delete data.StateID;
+        delete data.IndicatorViewID;
     
         let return_body;
     
         if (!_.isEmpty(data)) {
           try {
-            const update_nmmipState = await NmmipState.updateNmmipState(
-              { id: StateID },
+            const update_nmmipIndicatorView = await NmmipIndicatorView.updateNmmipIndicatorView(
+              { id: IndicatorViewID },
               data
             );
     
             return_body = {
               success: true,
-              details: update_nmmipState,
-              message: "State Successfully Updated"
+              details: update_nmmipIndicatorView,
+              message: "Indicator View Successfully Updated"
             };
     
             response.send(return_body);
@@ -188,18 +192,18 @@ class NmmipStateController {
     
           return response.status(400).send(return_body);
         }
-      } //updateNmmipState
+      } //updateNmmipIndicatorView
     
-    async removeNmmipState({ request, response }) {
+      async removeNmmipIndicatorView({ request, response }) {
         const data = request.post();
     
         const rules = {
-            StateID: `required|exists:${NmmipState.table},id`
+            IndicatorViewID: `required|exists:${NmmipIndicatorView.table},id`
         };
     
         const messages = {
-          "StateID.required": "A state  id is required",
-          "StateID.exists": "State  does not exist"
+          "IndicatorViewID.required": "An Indicator View id is required",
+          "IndicatorViewID.exists": "Indicator View does not exist"
         };
     
         const validation = await validate(data, rules, messages);
@@ -213,22 +217,22 @@ class NmmipStateController {
           });
         }
     
-        const { StateID } = data;
+        const { IndicatorViewID } = data;
     
         let return_body;
     
-        const nmmipstate = await NmmipState.find(StateID);
+        const nmmipIndicatorView = await NmmipIndicatorView.find(IndicatorViewID);
     
-        if (nmmipstate) {
+        if (nmmipIndicatorView) {
           try {
-            const delete_nmmipState = await NmmipState.removeNmmipState(
-                StateID
+            const delete_nmmipIndicatorView = await NmmipIndicatorView.removeNmmipIndicatorView(
+                IndicatorViewID
             );
     
             return_body = {
               success: true,
-              details: delete_nmmipState,
-              message: "nmmip State Successfully Deleted"
+              details: delete_nmmipIndicatorView,
+              message: "nmmip Indicator View Successfully Deleted"
             };
     
             response.send(return_body);
@@ -242,12 +246,12 @@ class NmmipStateController {
         } else {
           return_body = {
             success: false,
-            message: "nmmip State does not exist"
+            message: "nmmip Indicator View does not exist"
           };
     
           return response.status(400).send(return_body);
         }
-      } //removeNmmipState
+      } //removeNmmipIndicatorView
 }
 
-module.exports = NmmipStateController
+module.exports = NmmipIndicatorViewController

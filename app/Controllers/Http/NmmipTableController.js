@@ -2,21 +2,21 @@
 const _ = require("lodash");
 const Logger = use("Logger");
 const { validate } = use("Validator");
-const NmmipState = use("App/Models/NmmipState");
+const NmmipTable = use("App/Models/NmmipTable");
 const ControllerHelpers = use("App/Utility/ControllerHelpers");
 
-class NmmipStateController {
-  
-    async createNmmipState({ request, response }) {
+class NmmipTableController {
+
+    async createNmmipTable({ request, response }) {
         const data = request.post();
     
         const rules = {
-            StateName: `required|unique:${NmmipState.table}`
+            TableName: `required|unique:${NmmipTable.table}`
                 };
     
         const messages = {
-          "StateName.required": "A state name is required",
-          "StateName.unique": "A state with this name already exists"
+          "TableName.required": "A table name is required",
+          "TableName.unique": "A table with this name already exists"
         };
     
         const validation = await validate(data, rules, messages);
@@ -30,27 +30,27 @@ class NmmipStateController {
           });
         }
          //Duplicate check
-         let checkDuplicateState = await NmmipState.query()
+         let checkDuplicateTable = await NmmipTable.query()
          .where({
-             StateName: data.StateName
+             TableName: data.TableName
          })
          .first();
 
-     if (checkDuplicateState) {
+     if (checkDuplicateTable) {
          return response.status(403).send({
              success: false,
-             message: "A State with this name already exists"
+             message: "A Table with this name already exists"
          });
      }
         try {
-          const create_nmmipState= await NmmipState.createNmmipState(
+          const create_nmmipTable= await NmmipTable.createNmmipTable(
             data
           );
     
           const return_body = {
             success: true,
-            details: create_nmmipState,
-            message: "nmmip State Successfully Created"
+            details: create_nmmipTable,
+            message: "nmmip Table Successfully Created"
           };
     
           response.send(return_body);
@@ -61,18 +61,18 @@ class NmmipStateController {
             message: error.toString()
           });
         }
-      } //createNmmipState
+      } //createNmmipTable
 
-    async fetchNmmipStates({ request, response }) {
+    async fetchNmmipTables({ request, response }) {
         const data = request.all();
     
         try {
-          const nmmipStates = await NmmipState.getNmmipStates(data);
+          const nmmipTables = await NmmipTable.getNmmipTables(data);
     
           const return_body = {
             success: true,
-            details: nmmipStates,
-            message: "nmmip States Successfully Fetched"
+            details: nmmipTables,
+            message: "nmmip Tables Successfully Fetched"
           };
     
           response.send(return_body);
@@ -83,18 +83,18 @@ class NmmipStateController {
             message: error.toString()
           });
         }
-      } //fetchNmmipStates
+      } //fetchNmmipTables
 
-    async getNmmipState({ request, response }) {
+    async getNmmipTable({ request, response }) {
         const data = request.all();
     
         const rules = {
-            StateID: `required|exists:${NmmipState.table},id`
+            TableID: `required|exists:${NmmipTable.table},id`
         };
     
         const messages = {
-          "StateID.required": "A state id is required",
-          "StateID.exists": "state does not exist"
+          "TableID.required": "A table id is required",
+          "TableID.exists": "table does not exist"
         };
     
         const validation = await validate(data, rules, messages);
@@ -108,15 +108,15 @@ class NmmipStateController {
           });
         }
     
-        const { StateID } = data;
+        const { TableID } = data;
     
         try {
-          const nmmipstate = await NmmipState.getNmmipState(StateID);
+          const nmmiptable = await NmmipTable.getNmmipTable(TableID);
     
           const return_body = {
             success: true,
-            details: nmmipstate,
-            message: "State Successfully Fetched"
+            details: nmmiptable,
+            message: "Table Successfully Fetched"
           };
     
           response.send(return_body);
@@ -127,18 +127,18 @@ class NmmipStateController {
             message: error.toString()
           });
         }
-      } //getNmmipState
+      } //getNmmipTable
 
-    async updateNmmipState({ request, response }) {
+    async updateNmmipTable({ request, response }) {
         const data = request.post();
     
         const rules = {
-          StateID: `required|exists:${NmmipState.table},id`
+          TableID: `required|exists:${NmmipTable.table},id`
         };
     
         const messages = {
-          "StateID.required": "A State  id is required",
-          "StateID.exists": "State does not exist"
+          "TableID.required": "A Table  id is required",
+          "TableID.exists": "Table does not exist"
         };
     
         const validation = await validate(data, rules, messages);
@@ -152,24 +152,24 @@ class NmmipStateController {
           });
         }
     
-        const { StateID } = data;
+        const { TableID } = data;
     
         //Do not update the primary key
-        delete data.StateID;
+        delete data.TableID;
     
         let return_body;
     
         if (!_.isEmpty(data)) {
           try {
-            const update_nmmipState = await NmmipState.updateNmmipState(
-              { id: StateID },
+            const update_nmmipTable = await NmmipTable.updateNmmipTable(
+              { id: TableID },
               data
             );
     
             return_body = {
               success: true,
-              details: update_nmmipState,
-              message: "State Successfully Updated"
+              details: update_nmmipTable,
+              message: "Table Successfully Updated"
             };
     
             response.send(return_body);
@@ -188,18 +188,18 @@ class NmmipStateController {
     
           return response.status(400).send(return_body);
         }
-      } //updateNmmipState
+      } //updateNmmipTable
     
-    async removeNmmipState({ request, response }) {
+    async removeNmmipTable({ request, response }) {
         const data = request.post();
     
         const rules = {
-            StateID: `required|exists:${NmmipState.table},id`
+            TableID: `required|exists:${NmmipTable.table},id`
         };
     
         const messages = {
-          "StateID.required": "A state  id is required",
-          "StateID.exists": "State  does not exist"
+          "TableID.required": "A table  id is required",
+          "TableID.exists": "Table  does not exist"
         };
     
         const validation = await validate(data, rules, messages);
@@ -213,22 +213,22 @@ class NmmipStateController {
           });
         }
     
-        const { StateID } = data;
+        const { TableID } = data;
     
         let return_body;
     
-        const nmmipstate = await NmmipState.find(StateID);
+        const nmmiptable = await NmmipTable.find(TableID);
     
-        if (nmmipstate) {
+        if (nmmiptable) {
           try {
-            const delete_nmmipState = await NmmipState.removeNmmipState(
-                StateID
+            const delete_nmmipTable = await NmmipTable.removeNmmipTable(
+                TableID
             );
     
             return_body = {
               success: true,
-              details: delete_nmmipState,
-              message: "nmmip State Successfully Deleted"
+              details: delete_nmmipTable,
+              message: "nmmip Table Successfully Deleted"
             };
     
             response.send(return_body);
@@ -242,12 +242,12 @@ class NmmipStateController {
         } else {
           return_body = {
             success: false,
-            message: "nmmip State does not exist"
+            message: "nmmip Table does not exist"
           };
     
           return response.status(400).send(return_body);
         }
-      } //removeNmmipState
+      } //removeNmmipTable
 }
 
-module.exports = NmmipStateController
+module.exports = NmmipTableController

@@ -2,21 +2,36 @@
 const _ = require("lodash");
 const Logger = use("Logger");
 const { validate } = use("Validator");
+const NmmipValue = use("App/Models/NmmipValue");
 const NmmipState = use("App/Models/NmmipState");
+const NmmipIndicator = use("App/Models/NmmipIndicator");
 const ControllerHelpers = use("App/Utility/ControllerHelpers");
 
-class NmmipStateController {
-  
-    async createNmmipState({ request, response }) {
+class NmmipValueController {
+     
+    async createNmmipValue({ request, response }) {
         const data = request.post();
     
         const rules = {
-            StateName: `required|unique:${NmmipState.table}`
-                };
+            Value: `required|unique:${NmmipValue.table}`,
+            Year: "required",
+            Month:"required",
+            StateID: `required|exists:${NmmipState.table},id`,
+            IndicatorID: `required|exists:${NmmipIndicator.table},id`,
+
+
+        };
     
         const messages = {
-          "StateName.required": "A state name is required",
-          "StateName.unique": "A state with this name already exists"
+          "Value.required": "A Value  is required",
+          "Value.unique": "This value already exists",
+          "Year.required": "Provide a longitude",
+          "Month.required": "Provide a latitude",
+          "StateID.required": "A State id is required",
+          "StateID.exists": "State id does not exist",
+          "IndicatorID.required": "Provide an indicator Id",
+          "IndicatorID.exists": "Indicator does not exist",
+
         };
     
         const validation = await validate(data, rules, messages);
@@ -29,28 +44,15 @@ class NmmipStateController {
             )
           });
         }
-         //Duplicate check
-         let checkDuplicateState = await NmmipState.query()
-         .where({
-             StateName: data.StateName
-         })
-         .first();
-
-     if (checkDuplicateState) {
-         return response.status(403).send({
-             success: false,
-             message: "A State with this name already exists"
-         });
-     }
         try {
-          const create_nmmipState= await NmmipState.createNmmipState(
+          const create_nmmipValue = await NmmipValue.createNmmipValue(
             data
           );
     
           const return_body = {
             success: true,
-            details: create_nmmipState,
-            message: "nmmip State Successfully Created"
+            details: create_nmmipValue,
+            message: "nmmip Value Successfully Created"
           };
     
           response.send(return_body);
@@ -61,18 +63,18 @@ class NmmipStateController {
             message: error.toString()
           });
         }
-      } //createNmmipState
+      } //createNmmipValue
 
-    async fetchNmmipStates({ request, response }) {
+      async fetchNmmipValues({ request, response }) {
         const data = request.all();
     
         try {
-          const nmmipStates = await NmmipState.getNmmipStates(data);
+          const nmmipValues = await NmmipValue.getNmmipValues(data);
     
           const return_body = {
             success: true,
-            details: nmmipStates,
-            message: "nmmip States Successfully Fetched"
+            details: nmmipValues,
+            message: "nmmip Values Successfully Fetched"
           };
     
           response.send(return_body);
@@ -83,18 +85,18 @@ class NmmipStateController {
             message: error.toString()
           });
         }
-      } //fetchNmmipStates
+      } //fetchNmmipValues
 
-    async getNmmipState({ request, response }) {
+      async getNmmipValue({ request, response }) {
         const data = request.all();
     
         const rules = {
-            StateID: `required|exists:${NmmipState.table},id`
+            ValueID: `required|exists:${NmmipValue.table},id`
         };
     
         const messages = {
-          "StateID.required": "A state id is required",
-          "StateID.exists": "state does not exist"
+          "ValueID.required": "a Value  id is required",
+          "ValueID.exists": "Value does not exist"
         };
     
         const validation = await validate(data, rules, messages);
@@ -108,15 +110,15 @@ class NmmipStateController {
           });
         }
     
-        const { StateID } = data;
+        const { ValueID } = data;
     
         try {
-          const nmmipstate = await NmmipState.getNmmipState(StateID);
+          const nmmipValue = await NmmipValue.getNmmipValue(ValueID);
     
           const return_body = {
             success: true,
-            details: nmmipstate,
-            message: "State Successfully Fetched"
+            details: nmmipValue,
+            message: "Value Successfully Fetched"
           };
     
           response.send(return_body);
@@ -127,18 +129,18 @@ class NmmipStateController {
             message: error.toString()
           });
         }
-      } //getNmmipState
+      } //getNmmipValue
 
-    async updateNmmipState({ request, response }) {
+      async updateNmmipValue({ request, response }) {
         const data = request.post();
     
         const rules = {
-          StateID: `required|exists:${NmmipState.table},id`
+          ValueID: `required|exists:${NmmipValue.table},id`
         };
     
         const messages = {
-          "StateID.required": "A State  id is required",
-          "StateID.exists": "State does not exist"
+          "ValueID.required": "a Value  id is required",
+          "ValueID.exists": "Value does not exist"
         };
     
         const validation = await validate(data, rules, messages);
@@ -152,24 +154,24 @@ class NmmipStateController {
           });
         }
     
-        const { StateID } = data;
+        const { ValueID } = data;
     
         //Do not update the primary key
-        delete data.StateID;
+        delete data.ValueID;
     
         let return_body;
     
         if (!_.isEmpty(data)) {
           try {
-            const update_nmmipState = await NmmipState.updateNmmipState(
-              { id: StateID },
+            const update_nmmipValue = await NmmipValue.updateNmmipValue(
+              { id: ValueID },
               data
             );
     
             return_body = {
               success: true,
-              details: update_nmmipState,
-              message: "State Successfully Updated"
+              details: update_nmmipValue,
+              message: "Value Successfully Updated"
             };
     
             response.send(return_body);
@@ -188,18 +190,18 @@ class NmmipStateController {
     
           return response.status(400).send(return_body);
         }
-      } //updateNmmipState
+      } //updateNmmipValue
     
-    async removeNmmipState({ request, response }) {
+      async removeNmmipValue({ request, response }) {
         const data = request.post();
     
         const rules = {
-            StateID: `required|exists:${NmmipState.table},id`
+            ValueID: `required|exists:${NmmipValue.table},id`
         };
     
         const messages = {
-          "StateID.required": "A state  id is required",
-          "StateID.exists": "State  does not exist"
+          "ValueID.required": "a Value  id is required",
+          "ValueID.exists": "Value  does not exist"
         };
     
         const validation = await validate(data, rules, messages);
@@ -213,22 +215,22 @@ class NmmipStateController {
           });
         }
     
-        const { StateID } = data;
+        const { ValueID } = data;
     
         let return_body;
     
-        const nmmipstate = await NmmipState.find(StateID);
+        const nmmipValue = await NmmipValue.find(ValueID);
     
-        if (nmmipstate) {
+        if (nmmipValue) {
           try {
-            const delete_nmmipState = await NmmipState.removeNmmipState(
-                StateID
+            const delete_nmmipValue = await NmmipValue.removeNmmipValue(
+                ValueID
             );
     
             return_body = {
               success: true,
-              details: delete_nmmipState,
-              message: "nmmip State Successfully Deleted"
+              details: delete_nmmipValue,
+              message: "nmmip Value Successfully Deleted"
             };
     
             response.send(return_body);
@@ -242,12 +244,12 @@ class NmmipStateController {
         } else {
           return_body = {
             success: false,
-            message: "nmmip State does not exist"
+            message: "nmmip Value does not exist"
           };
     
           return response.status(400).send(return_body);
         }
-      } //removeNmmipState
+      } //removeNmmipValue
 }
 
-module.exports = NmmipStateController
+module.exports = NmmipValueController

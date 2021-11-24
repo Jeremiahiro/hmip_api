@@ -4,11 +4,14 @@
 const Model = use('Model')
 const Database = use("Database");
 const _ = require("lodash");
+
 class NmmipState extends Model {
     static get table() {
         return "NmmipStates";
       }
-    
+      static get primaryKey() {
+        return "id";
+      }
       static async createNmmipState(data) {
         const NmmipNmmipState = await this.create(data);
     

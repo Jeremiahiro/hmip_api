@@ -115,7 +115,7 @@ Route.group(() => {
 })
 .prefix("NmmipColumnHeader")
 .middleware(["auth"]);
-
+//NmmipColumnHeader
 Route.group(() => {
         Route.post("create", "NmmipDataGroupController.createNmmipDataGroup");
       
@@ -133,7 +133,7 @@ Route.group(() => {
 })
 .prefix("NmmipDataGroups")
 .middleware(["auth"]);
-
+//NmmipDataGroups
 Route.group(() => {
           Route.post("create", "NmmipStateController.createNmmipState");
         
@@ -151,7 +151,7 @@ Route.group(() => {
 })
 .prefix("NmmipStates")
 .middleware(["auth"]);      
-    
+//NmmipStates
 Route.group(() => {
 Route.post("create", "SexController.createSex");
             
@@ -188,6 +188,8 @@ Route.group(() => {
   })            
 .prefix("EmploymentSector")
 .middleware(["auth"]); 
+//EmploymentSector
+
 Route.group(() => {
   Route.post("create", "EmploymentStatusController.createEmploymentStatus");
               
@@ -205,7 +207,7 @@ Route.group(() => {
   })            
 .prefix("EmploymentStatus")
 .middleware(["auth"]); 
-
+//EmploymentStatus
 Route.group(() => {
   Route.post("create", "OwnershipTypeController.createOwnershipType");
               
@@ -223,7 +225,7 @@ Route.group(() => {
   })            
 .prefix("OwnershipType")
 .middleware(["auth"]);
-
+//OwnershipType
 Route.group(() => {
   Route.post("create", "PropertyTypeController.createPropertyType");
               
@@ -241,7 +243,7 @@ Route.group(() => {
   })            
 .prefix("PropertyType")
 .middleware(["auth"]);
-
+//PropertyType
 Route.group(() => {
   Route.post("create", "QuestionnaireController.createQuestionnaire");
               
@@ -257,3 +259,208 @@ Route.group(() => {
   })            
 .prefix("Questionnaire")
 .middleware(["auth"]);
+//Questionnaire
+Route.group(() => {
+  Route.post("create", "SecondaryIncomeController.createSecondaryIncome");
+              
+  Route.route("fetch", "SecondaryIncomeController.fetchSecondaryIncomes", [
+  "GET",
+  "POST"
+  ]);     
+  Route.route("get", "SecondaryIncomeController.getSecondaryIncome", [
+  "GET",
+  "POST"
+  ]);
+  Route.post("update", "SecondaryIncomeController.updateSecondaryIncome");
+
+  Route.delete("delete", "SecondaryIncomeController.removeSecondaryIncome");
+  })            
+.prefix("SecondaryIncome")
+.middleware(["auth"]);
+//SecondaryIncome
+Route.group(() => {
+  Route.post("create", "TypeOfBuyerController.createTypeOfBuyer");
+              
+  Route.route("fetch", "TypeOfBuyerController.fetchTypeOfBuyers", [
+  "GET",
+  "POST"
+  ]);     
+  Route.route("get", "TypeOfBuyerController.getTypeOfBuyer", [
+  "GET",
+  "POST"
+  ]);
+  Route.post("update", "TypeOfBuyerController.updateTypeOfBuyer");
+
+  Route.delete("delete", "TypeOfBuyerController.removeTypeOfBuyer");
+  })            
+.prefix("TypeOfBuyer")
+.middleware(["auth"]);
+//TypeOfBuyer
+Route.group(() => {
+  Route.post("create", "LgaController.createLga");
+              
+  Route.route("fetch", "LgaController.fetchLgas", [
+  "GET",
+  "POST"
+  ]);     
+  Route.route("get", "LgaController.getLga", [
+  "GET",
+  "POST"
+  ]);
+  Route.post("update", "LgaController.updateLga");
+
+  Route.delete("delete", "LgaController.removeLga");
+  })            
+.prefix("Lga")
+.middleware(["auth"]);
+//Lga
+Route.group(() => {
+  Route.post("create", "NmmipIndicatorController.createNmmipIndicator");
+              
+  Route.route("fetch", "NmmipIndicatorController.fetchNmmipIndicators", [
+  "GET",
+  "POST"
+  ]);     
+  Route.route("get", "NmmipIndicatorController.getNmmipIndicator", [
+  "GET",
+  "POST"
+  ]);
+  Route.post("update", "NmmipIndicatorController.updateNmmipIndicator");
+
+  Route.delete("delete", "NmmipIndicatorController.removeNmmipIndicator");
+  })            
+.prefix("NmmipIndicators")
+.middleware(["auth"]);
+//NmmipIndicators
+Route.group(() => {
+  Route.post("create", "NmmipIndicatorViewController.createNmmipIndicatorView");
+              
+  Route.route("fetch", "NmmipIndicatorViewController.fetchNmmipIndicatorViews", [
+  "GET",
+  "POST"
+  ]);     
+  Route.route("get", "NmmipIndicatorViewController.getNmmipIndicatorView", [
+  "GET",
+  "POST"
+  ]);
+  Route.post("update", "NmmipIndicatorViewController.updateNmmipIndicatorView");
+
+  Route.delete("delete", "NmmipIndicatorViewController.removeNmmipIndicatorView");
+  })            
+.prefix("NmmipIndicatorViews")
+.middleware(["auth"]);
+//NmmipIndicatorViews
+
+Route.group(() => {
+  Route.post("create", "NmmipTableController.createNmmipTable");
+              
+  Route.route("fetch", "NmmipTableController.fetchNmmipTables", [
+  "GET",
+  "POST"
+  ]);     
+  Route.route("get", "NmmipTableController.getNmmipTable", [
+  "GET",
+  "POST"
+  ]);
+  Route.post("update", "NmmipTableController.updateNmmipTable");
+
+  Route.delete("delete", "NmmipTableController.removeNmmipTable");
+  })            
+.prefix("NmmipTables")
+.middleware(["auth"]);
+//NmmipTables
+
+Route.group(() => {
+  Route.post("create", "NmmipLocationController.createNmmipLocation");
+              
+  Route.route("fetch", "NmmipLocationController.fetchNmmipLocations", [
+  "GET",
+  "POST"
+  ]);     
+  Route.route("get", "NmmipLocationController.getNmmipLocation", [
+  "GET",
+  "POST"
+  ]);
+  Route.post("update", "NmmipLocationController.updateNmmipLocation");
+
+  Route.delete("delete", "NmmipLocationController.removeNmmipLocation");
+  })            
+.prefix("NmmipLocations")
+.middleware(["auth"]);
+//NmmipLocations
+
+Route.group(() => {
+  Route.post("create", "NmmipValueController.createNmmipValue");
+              
+  Route.route("fetch", "NmmipValueController.fetchNmmipValues", [
+  "GET",
+  "POST"
+  ]);     
+  Route.route("get", "NmmipValueController.getNmmipValue", [
+  "GET",
+  "POST"
+  ]);
+  Route.post("update", "NmmipValueController.updateNmmipValue");
+
+  Route.delete("delete", "NmmipValueController.removeNmmipValue");
+  })            
+.prefix("NmmipValues")
+.middleware(["auth"]);
+//NmmipValues
+
+Route.group(() => {
+  Route.post("create", "NmmipMdAsInNigeriaController.createNmmipMDAsInNigeria");
+              
+  Route.route("fetch", "NmmipMdAsInNigeriaController.fetchNmmipMDAsInNigerias", [
+  "GET",
+  "POST"
+  ]);     
+  Route.route("get", "NmmipMdAsInNigeriaController.getNmmipMDAsInNigeria", [
+  "GET",
+  "POST"
+  ]);
+  Route.post("update", "NmmipMdAsInNigeriaController.updateNmmipMDAsInNigeria");
+
+  Route.delete("delete", "NmmipMdAsInNigeriaController.removeNmmipMDAsInNigeria");
+  })            
+.prefix("NmmipMDAsInNigeria")
+.middleware(["auth"]);
+//NmmipMDAsInNigeria
+
+Route.group(() => {
+  Route.post("create", "NmmipRowHeaderController.createNmmipRowHeader");
+              
+  Route.route("fetch", "NmmipRowHeaderController.fetchNmmipRowHeaders", [
+  "GET",
+  "POST"
+  ]);     
+  Route.route("get", "NmmipRowHeaderController.getNmmipRowHeader", [
+  "GET",
+  "POST"
+  ]);
+  Route.post("update", "NmmipRowHeaderController.updateNmmipRowHeader");
+
+  Route.delete("delete", "NmmipRowHeaderController.removeNmmipRowHeader");
+  })            
+.prefix("NmmipRowHeaders")
+.middleware(["auth"]);
+//NmmipRowHeaders
+
+Route.group(() => {
+  Route.post("create", "NmmipRowController.createNmmipRow");
+              
+  Route.route("fetch", "NmmipRowController.fetchNmmipRows", [
+  "GET",
+  "POST"
+  ]);     
+  Route.route("get", "NmmipRowController.getNmmipRow", [
+  "GET",
+  "POST"
+  ]);
+  Route.post("update", "NmmipRowController.updateNmmipRow");
+
+  Route.delete("delete", "NmmipRowController.removeNmmipRow");
+  })            
+.prefix("NmmipRows")
+.middleware(["auth"]);
+//NmmipRows
