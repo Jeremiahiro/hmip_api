@@ -464,3 +464,22 @@ Route.group(() => {
 .prefix("NmmipRows")
 .middleware(["auth"]);
 //NmmipRows
+
+Route.group(() => {
+  Route.post("create", "NmmipNredcSurveyFormController.createNmmipNredcSurveyForm");
+              
+  Route.route("fetch", "NmmipNredcSurveyFormController.fetchNmmipNredcSurveyForms", [
+  "GET",
+  "POST"
+  ]);     
+  Route.route("get", "NmmipNredcSurveyFormController.getNmmipNredcSurveyForm", [
+  "GET",
+  "POST"
+  ]);
+ // Route.post("update", "NmmipNredcSurveyFormController.updateNmmipRow");
+
+  Route.delete("delete", "NmmipNredcSurveyFormController.removeNmmipNredcSurveyForm");
+  })            
+.prefix("NmmipNredcSurveyForm")
+.middleware(["auth"]);
+//NmmipNredcSurveyForm

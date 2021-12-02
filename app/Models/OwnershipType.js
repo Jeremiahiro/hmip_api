@@ -26,7 +26,6 @@ class OwnershipType extends Model {
         this.addHook("beforeDelete", "RestrictionHook.noDeleteLocked");
       }
     
-    
       static async createOwnershipType(data) {
       
         const OwnershipType = await this.create(data);
