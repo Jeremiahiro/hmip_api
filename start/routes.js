@@ -258,7 +258,7 @@ Route.group(() => {
   Route.delete("delete", "QuestionnaireController.removeQuestionnaire");
   })            
 .prefix("Questionnaire")
-.middleware(["auth"]);
+//.middleware(["auth"]);
 //Questionnaire
 Route.group(() => {
   Route.post("create", "SecondaryIncomeController.createSecondaryIncome");
