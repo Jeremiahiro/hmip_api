@@ -55,7 +55,7 @@ class NmmipNredcsurveyformsCreateSchema extends Schema {
       //table.string("PropertyType", 150).nullable(); use ID instead
       table.string("PropertyTypeID").nullable();
       table.float("MortagePropertyAmount", 14, 2).nullable();
-      table.timestamps()
+      table.timestamps() //creates data created and edited
     })
   }
 
