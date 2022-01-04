@@ -248,6 +248,29 @@ class NmmipStateController {
           return response.status(400).send(return_body);
         }
       } //removeNmmipState
+    
+      async fetchNmmipStateCount({ request, response }) {
+        const data = request.all();
+    
+        try {
+          const users = await NmmipState.getNmmipStateCount(data);
+    
+          const return_body = {
+            success: true,
+            details: users || {},
+            message: "Number of Nmmip States Successfully Fetched"
+          };
+    
+          response.send(return_body);
+        } catch (error) {
+          Logger.error("Error : ", error);
+          return response.status(500).send({
+            success: false,
+            message: error.toString()
+          });
+        }
+      } //fetchNmmipStateCount
+    
 }
 
 module.exports = NmmipStateController

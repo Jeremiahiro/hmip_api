@@ -58,6 +58,13 @@ class NmmipIndicator extends Model {
     
         return run_delete;
       } //removeNmmipIndicator
+
+      static async getNmmipIndicatorCount() {
+        const NmmipindicatorsCount = await Database
+             .from('NmmipIndicators')
+             .getCount()
+         return NmmipindicatorsCount;
+     } //NmmipindicatorsCount
 }
 
 

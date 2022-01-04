@@ -49,6 +49,13 @@ class NmmipState extends Model {
     
         return run_delete;
       } //removeNmmipState
+    
+      static async getNmmipStateCount() {
+        const NmmipStateCount = await Database
+             .from('NmmipStates')
+             .getCount()
+         return NmmipStateCount;
+     } //getNmmipStateCount
 }
 
 module.exports = NmmipState

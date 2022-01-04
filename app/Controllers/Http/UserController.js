@@ -651,6 +651,29 @@ class UserController {
       });
     }
   } //getUser
+  
+  async fetchUsersCount({ request, response }) {
+    const data = request.all();
+
+    try {
+      const users = await User.getUserCount(data);
+
+      //let usersJSON = users.toJSON();
+      const return_body = {
+        success: true,
+        details: users || {},
+        message: "Number of Users Successfully Fetched"
+      };
+
+      response.send(return_body);
+    } catch (error) {
+      Logger.error("Error : ", error);
+      return response.status(500).send({
+        success: false,
+        message: error.toString()
+      });
+    }
+  } //fetchUsersCount
 
   async activateAccount({ Email, Password }) {
 

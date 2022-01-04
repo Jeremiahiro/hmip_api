@@ -245,6 +245,28 @@ class NmmipLocationController {
           return response.status(400).send(return_body);
         }
       } //removeNmmipLocation
+
+      async fetchNmmipLocationCount({ request, response }) {
+        const data = request.all();
+    
+        try {
+          const locations = await NmmipLocation.getNmmipLocationCount(data);
+    
+          const return_body = {
+            success: true,
+            details: locations || {},
+            message: "Number of Nmmip Locations Successfully Fetched"
+          };
+    
+          response.send(return_body);
+        } catch (error) {
+          Logger.error("Error : ", error);
+          return response.status(500).send({
+            success: false,
+            message: error.toString()
+          });
+        }
+      } //fetchNmmipLocationCount
 }
 
 module.exports = NmmipLocationController

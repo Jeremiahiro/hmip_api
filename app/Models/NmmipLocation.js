@@ -56,6 +56,13 @@ class NmmipLocation extends Model {
     
         return run_delete;
       } //removeNmmipLocation
+
+      static async getNmmipLocationCount() {
+        const NmmipLocationsCount = await Database
+             .from('NmmipLocations')
+             .getCount()
+         return NmmipLocationsCount;
+     } //getNmmipLocationCount
 }
 
 module.exports = NmmipLocation

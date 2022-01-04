@@ -247,6 +247,29 @@ class NmmipIndicatorController {
           return response.status(400).send(return_body);
         }
       } //removeNmmipIndicator
+
+      async fetchNmmipIndicatorCount({ request, response }) {
+        const data = request.all();
+    
+        try {
+          const indicator = await NmmipIndicator.getNmmipIndicatorCount(data);
+    
+          const return_body = {
+            success: true,
+            details: indicator || {},
+            message: "Number of Nmmip indicators Successfully Fetched"
+          };
+    
+          response.send(return_body);
+        } catch (error) {
+          Logger.error("Error : ", error);
+          return response.status(500).send({
+            success: false,
+            message: error.toString()
+          });
+        }
+      } //fetchNmmipIndicatorCount
+
 }
 
 module.exports = NmmipIndicatorController
