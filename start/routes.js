@@ -28,7 +28,13 @@ Route.group(() => {
   Route.post("initiatepasswordreset", "UserController.initiatePasswordReset");
   Route.post("resetpassword", "UserController.resetPassword");
   Route.post("activateaccount", "UserController.activateAccount");
-  Route.route("get", "UserController.fetch", ["GET", "POST"]);
+  Route.route("fetch", "UserController.fetchUsers", ["GET", "POST"]);
+  Route.route("getUser", "UserController.getUser", [
+    "GET",
+    "POST"
+  ]);
+  Route.route("count", "UserController.fetchUsersCount", ["GET", "POST"]);
+
 }).prefix("User");
 
 
@@ -148,6 +154,10 @@ Route.group(() => {
           ]);
           Route.post("update", "NmmipStateController.updateNmmipState");
           Route.delete("delete", "NmmipStateController.removeNmmipState");
+          Route.route("count", "NmmipStateController.fetchNmmipStateCount", [
+            "GET",
+            "POST"
+          ]);
 })
 .prefix("NmmipStates")
 .middleware(["auth"]);      
@@ -328,6 +338,10 @@ Route.group(() => {
   Route.post("update", "NmmipIndicatorController.updateNmmipIndicator");
 
   Route.delete("delete", "NmmipIndicatorController.removeNmmipIndicator");
+  Route.route("count", "NmmipIndicatorController.fetchNmmipIndicatorCount", [
+    "GET",
+    "POST"
+    ]); 
   })            
 .prefix("NmmipIndicators")
 .middleware(["auth"]);
@@ -384,6 +398,10 @@ Route.group(() => {
   Route.post("update", "NmmipLocationController.updateNmmipLocation");
 
   Route.delete("delete", "NmmipLocationController.removeNmmipLocation");
+  Route.route("count", "NmmipLocationController.fetchNmmipLocationCount", [
+    "GET",
+    "POST"
+    ]);
   })            
 .prefix("NmmipLocations")
 .middleware(["auth"]);

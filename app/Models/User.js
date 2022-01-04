@@ -135,6 +135,26 @@ class User extends Model {
     }
   } //guardUserData
 
+  static async getOrganisationUsers(OrganizationID) {
+    const Users = await this.query()
+      .where({
+        OrganizationID,
+        IsEnabled: true
+
+      })
+      .fetch();
+
+    return Users;
+  } //getUsers
+
+  static async getUserCount() {
+ 
+   const userCount = await Database
+        .from('Users')
+        .getCount()
+    return userCount;
+     // returns number
+} //getUserCount
 
 
 }
