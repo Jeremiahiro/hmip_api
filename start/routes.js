@@ -33,7 +33,7 @@ Route.group(() => {
     "GET",
     "POST"
   ]);
-  Route.route("count", "UserController.fetchUsersCount", ["GET", "POST"]);
+ // Route.route("count", "UserController.fetchUsersCount", ["GET", "POST"]);
 
 }).prefix("User");
 
@@ -501,3 +501,10 @@ Route.group(() => {
 .prefix("NmmipNredcSurveyForm")
 .middleware(["auth"]);
 //NmmipNredcSurveyForm
+
+//ADMIN ROUTES
+Route.group(() => {
+ 
+  Route.route("count", "DashboardController.fetchUsersCount", ["GET", "POST"]);
+
+}).prefix("Dashboard");
