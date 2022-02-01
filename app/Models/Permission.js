@@ -20,7 +20,9 @@ class Permission extends Model {
       PermissionInstance.PermissionID = uuidv1();
     });
   }
-
+  PermissionGroup() {
+    return this.hasOne("App/Models/PermissionGroup", "PermissionGroupID", "PermissionGroupID");
+  }
   static async createPermission(data) {
     const Permission = await this.create(data);
 
@@ -49,6 +51,7 @@ class Permission extends Model {
   static async getPermissions(fetch_data) {
     const Permissions = await this.query()
       .where(fetch_data)
+      .with ("PermissionGroup")
       .fetch();
 
     return Permissions;
