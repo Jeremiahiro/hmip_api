@@ -53,7 +53,7 @@ Route.group(() => {
     "POST"
   ]);
 
-  Route.post("delete", "PermissionGroupController.removeGroup");
+  Route.delete("delete", "PermissionGroupController.removeGroup");
 })
 .prefix("PermissionGroups")
 .middleware(["auth"]);
@@ -72,8 +72,7 @@ Route.group(() => {
   ]);
 
   Route.post("update", "PermissionController.updatePermission");
-
-  Route.post("delete", "PermissionController.removePermission");
+  Route.delete("delete", "PermissionController.removePermission");
 })
 .prefix("Permission")
 .middleware(["auth"]);
@@ -82,7 +81,7 @@ Route.group(() => {
   Route.post("create", "RoleController.createRole");
   Route.post("update", "RoleController.updateRole");
   Route.route("fetch", "RoleController.fetchRoles", ["GET", "POST"]);
-  Route.post("delete", "RoleController.removeRole");
+  Route.delete("delete", "RoleController.removeRole");
   Route.route("getrole", "RoleController.getRole", ["GET", "POST"]);
 })
 .prefix("Role")
