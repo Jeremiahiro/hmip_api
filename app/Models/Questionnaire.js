@@ -17,8 +17,9 @@ class Questionnaire extends Model {
 
       static async getQuestionnaires(fetch_data) {
         const Questionnaires = await this.query()
-        .where(fetch_data)
-        .fetch();
+        //.where(fetch_data)
+        //.fetch()
+        .paginate(fetch_data.page,fetch_data.limit)
         return Questionnaires;
       } //getQuestionnaires
 

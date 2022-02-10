@@ -26,14 +26,20 @@ class NmmipIndicator extends Model {
         return NmmipIndicator;
       } //createNmmipIndicator
 
-      static async getNmmipIndicators(fetch_data) {
+      static async getNmmipIndicators(data) {
+        //console.log("DATATATA", data)
         const NmmipIndicators = await this.query()
-        .where(fetch_data)
+        .from('NmmipIndicators')
+        //.where(data)
         .with("NmmipDataGroup")
-        .fetch();
+        .orderBy("created_at", "desc")
+        .paginate(data.page, data.limit)
+       //.fetch();
+
         return NmmipIndicators;
       } //getNmmipIndicators
-
+     
+     
       static async getNmmipIndicator(IndicatorID) {
         const NmmipIndicator = await this.find(IndicatorID);
     

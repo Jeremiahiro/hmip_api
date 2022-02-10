@@ -30,10 +30,11 @@ class NmmipValue extends Model {
 
       static async getNmmipValues(fetch_data) {
         const NmmipValues = await this.query()
-        .where(fetch_data)
+        //.where(fetch_data)
         .with("NmmipState")
         .with("NmmipIndicator")
-        .fetch();
+        .paginate(fetch_data.page,fetch_data.limit)
+        //.fetch();
         return NmmipValues;
       } //getNmmipValues
 

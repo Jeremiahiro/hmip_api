@@ -27,9 +27,10 @@ class NmmipIndicatorView extends Model {
 
       static async getNmmipIndicatorViews(fetch_data) {
         const NmmipIndicatorViews = await this.query()
-        .where(fetch_data)
+        //.where(fetch_data)
         .with("NmmipIndicator")
-        .fetch();
+        .paginate(fetch_data.page, fetch_data.limit)
+        //.fetch();
         return NmmipIndicatorViews;
       } //getNmmipIndicatorViews
 

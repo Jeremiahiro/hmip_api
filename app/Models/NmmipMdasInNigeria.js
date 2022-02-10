@@ -20,8 +20,9 @@ class NmmipMdasInNigeria extends Model {
 
       static async getNmmipMDAsInNigerias(fetch_data) {
         const NmmipMDAsInNigerias = await this.query()
-        .where(fetch_data)
-        .fetch();
+        //.where(fetch_data)
+        //.fetch();
+        .paginate(fetch_data.page, fetch_data.limit)
         return NmmipMDAsInNigerias;
       } //getNmmipMDAsInNigerias
 

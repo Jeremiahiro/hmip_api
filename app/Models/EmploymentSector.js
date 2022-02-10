@@ -57,8 +57,9 @@ class EmploymentSector extends Model {
     
       static async getEmploymentSectors(fetch_data) {
         const EmploymentSectors = await this.query()
-          .where(fetch_data)
-          .fetch();
+          //.where(fetch_data)
+          .paginate(fetch_data.page, fetch_data.limit)
+          //.fetch();
     
         return EmploymentSectors;
       } //getEmploymentSectors

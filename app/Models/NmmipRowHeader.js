@@ -49,9 +49,10 @@ class NmmipRowHeader extends Model {
     
       static async getNmmipRowHeaders(fetch_data) {
         const NmmipRowHeaders = await this.query()
-          .where(fetch_data)
+          //.where(fetch_data)
           .with('NmmipTable')
-          .fetch();
+          .paginate(fetch_data.page,fetch_data.limit)
+          //.fetch();
     
         return NmmipRowHeaders;
       } //getNmmipRowHeaders

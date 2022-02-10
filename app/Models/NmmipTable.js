@@ -20,8 +20,9 @@ class NmmipTable extends Model {
 
       static async getNmmipTables(fetch_data) {
         const NmmipTables = await this.query()
-        .where(fetch_data)
-        .fetch();
+        // .where(fetch_data)
+        // .fetch();
+        .paginate(fetch_data.page,fetch_data.limit)
         return NmmipTables;
       } //getNmmipTables
 

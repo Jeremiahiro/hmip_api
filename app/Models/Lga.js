@@ -26,9 +26,10 @@ class Lga extends Model {
 
       static async getLgas(fetch_data) {
         const Lga = await this.query()
-        .where(fetch_data)
+        //.where(fetch_data)
         .with("NmmipStates")
-        .fetch();
+        .paginate(fetch_data.page,fetch_data.limit)
+        //.fetch();
         return Lga;
       } //getLgas
 

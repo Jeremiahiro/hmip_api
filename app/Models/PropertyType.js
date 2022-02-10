@@ -57,9 +57,9 @@ class PropertyType extends Model {
     
       static async getPropertyTypes(fetch_data) {
         const PropertyTypes = await this.query()
-          .where(fetch_data)
-          .fetch();
-    
+          //.where(fetch_data)
+          //.fetch();
+         .paginate(fetch_data.page,fetch_data.limit)
         return PropertyTypes;
       } //getPropertyTypes
     

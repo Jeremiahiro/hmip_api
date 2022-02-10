@@ -41,9 +41,9 @@ class FeedbackForm extends Model {
     
       static async getFeedbacks(fetch_data) {
         const Feedbacks = await this.query()
-          .where(fetch_data)
-          .fetch();
-    
+          //.where(fetch_data)
+          //.fetch();
+    .paginate(fetch_data.page,fetch_data.limit)
         return Feedbacks;
       } //getFeedback
     

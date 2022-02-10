@@ -68,7 +68,27 @@ class NmmipRowHeaderController {
 
     async fetchNmmipRowHeaders({ request, response }) {
         const data = request.all();
-
+        const rules = {
+            page: `required`,
+            limit: `required`
+          };
+      
+          const messages = {
+           
+           "page.required": "An page value",
+            "limit.required": "A limit value"
+          };
+      
+          const validation = await validate(data, rules, messages);
+      
+          if (validation.fails()) {
+            return response.status(400).send({
+              success: false,
+              message: ControllerHelpers.extractValidationErrorMessages(
+                validation.messages()
+              )
+            });
+          }
         try {
             const nmmipRowHeader = await NmmipRowHeader.getNmmipRowHeaders(data);
 

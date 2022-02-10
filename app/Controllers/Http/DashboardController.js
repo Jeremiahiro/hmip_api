@@ -2,13 +2,10 @@
 const Logger = use("Logger");
 
 const _ = require("lodash");
-//const url = require("url");
-//const { validate, validateAll } = use("Validator");
 const User = use("App/Models/User");
 const NmmipIndicator = use("App/Models/NmmipIndicator");
 const NmmipLocation = use("App/Models/NmmipLocation");
 const NmmipState = use("App/Models/NmmipState");
-const ControllerHelpers = use("App/Utility/ControllerHelpers");
 class DashboardController {
     async fetchUsersCount({ request, response }) {
         const data = request.all();

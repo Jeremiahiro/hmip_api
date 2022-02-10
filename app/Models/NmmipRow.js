@@ -55,11 +55,12 @@ class NmmipRow extends Model {
     
       static async getNmmipRows(fetch_data) {
         const NmmipRows = await this.query()
-          .where(fetch_data)
+          //.where(fetch_data)
           .with('NmmipTable')
           .with('NmmipRowHeader')
           .with('NmmipColumnHeader')
-          .fetch();
+          .paginate(fetch_data.page,fetch_data.limit)
+          //.fetch();
     
         return NmmipRows;
       } //getNmmipRows

@@ -90,7 +90,7 @@ class NmmipNredcSurveyForm extends Model {
     
       static async getNmmipNREDCSurveyForms(fetch_data) {
         const NmmipNREDCSurveyForms = await this.query()
-          .where(fetch_data)
+          //.where(fetch_data)
           .with('NmmipStates')
           .with('Lga')
           .with('EmploymentSector')
@@ -99,7 +99,8 @@ class NmmipNredcSurveyForm extends Model {
           .with('OwnershipTypes')
           .with('PropertyType')
           .with('Sex')
-          .fetch();
+          .paginate(fetch_data.page,fetch_data.limit)
+          //.fetch();
     
         return NmmipNREDCSurveyForms;
       } //getNmmipNREDCSurveyForms
