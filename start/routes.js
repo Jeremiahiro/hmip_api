@@ -501,6 +501,43 @@ Route.group(() => {
 .middleware(["auth"]);
 //NmmipNredcSurveyForm
 
+Route.group(() => {
+  Route.post("create", "NmmipEnumeratorController.createNmmipEnumerator");
+
+  Route.route("fetch", "NmmipEnumeratorController.fetchNmmipEnumerators", [
+    "GET",
+    "POST"
+  ]);
+
+  Route.route("get", "NmmipEnumeratorController.getNmmipEnumerator", [
+    "GET",
+    "POST"
+  ]);
+  Route.post("update", "NmmipEnumeratorController.updateNmmipEnumerator");
+  Route.delete("delete", "NmmipEnumeratorController.removeNmmipEnumerator");
+})
+.prefix("NmmipEnumerators")
+.middleware(["auth"]);      
+//NmmipEnumerators
+
+Route.group(() => {
+  Route.post("create", "NmmipEkitiSurveyFormController.createNmmipEkitiSurveyForm");
+              
+  Route.route("fetch", "NmmipEkitiSurveyFormController.fetchNmmipEkitiSurveyForms", [
+  "GET",
+  "POST"
+  ]);     
+  Route.route("get", "NmmipEkitiSurveyFormController.getNmmipEkitiSurveyForm", [
+  "GET",
+  "POST"
+  ]);
+  Route.delete("delete", "NmmipEkitiSurveyFormController.removeNmmipEkitiSurveyForm");
+  })            
+.prefix("NmmipEkitiSurveyForm")
+.middleware(["auth"]);
+//NmmipEkitiSurveyForm
+
+
 //ADMIN ROUTES
 Route.group(() => {
  

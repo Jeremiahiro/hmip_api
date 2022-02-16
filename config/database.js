@@ -91,5 +91,19 @@ module.exports = {
       database: Env.get('DB_DATABASE', 'adonis')
     },
     debug: Env.get('DB_DEBUG', false)
-  }
+  },
+  /* MSSQL */
+  mssql: {
+    client: "mssql",
+    connection: {
+      host: Env.get("DB_HOST", "localhost"), // azure database
+      user: Env.get("DB_USER", "root"), // azure user
+      password: Env.get("DB_PASSWORD", ""), //azure password
+      database: Env.get("DB_DATABASE", "adonis"), //azure database
+      options: {
+        encrypt: Env.get("DB_ENCRYPT", true), // use this for Azure database encryption
+      },
+    },
+  },
+ 
 }
