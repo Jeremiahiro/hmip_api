@@ -62,9 +62,9 @@ class User extends Model {
     return this.hasMany("App/Models/Token");
   }
 
-  // Department() {
-  //   return this.hasOne("App/Models/Department", "DepartmentID", "DepartmentID");
-  // }
+  //  Roles() {
+  //  return this.hasOne("App/Models/Role", "RoleID", "RoleIDs");
+  //  }
 
   static async createUser(data) {
     await this.guardUserData(data);
@@ -115,9 +115,7 @@ class User extends Model {
   static async getUsers(fetch_data) {
     const Users = await this.query()
       .where(fetch_data)
-      // .with("Department")
       .fetch();
-
     return Users;
   } //getUsers
 

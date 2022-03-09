@@ -174,49 +174,51 @@ class Role extends Model {
 
     return Role;
   }
-  // static async getOrganizationRoles(fetch_data) {
-  //     //Actual fetch should get only custom roles and default roles
-  //     fetch_data.RoleType = RoleTypes.Custom;
-  //     const Roles = await this.query()
-  //         .where(fetch_data)
-  //         .orWhere({
-  //             RoleType: RoleTypes.Default
-  //         })
-  //         .fetch();
+  static async getOrganizationRoles(fetch_data) {
+    //Actual fetch should get only custom roles and default roles
+    fetch_data.RoleType = RoleTypes.Custom;
+    const Roles = await this.query()
+      .where(fetch_data)
+      .orWhere({
+        RoleType: RoleTypes.Default
+      })
+      .fetch();
 
-  //     //Fetch overrides
-  //     const OverrideRoles = await this.query()
-  //         .where({
-  //             OrganizationID: fetch_data.OrganizationID,
-  //             RoleType: RoleTypes.Override
-  //         })
-  //         .fetch();
+    //Fetch overrides
+    const OverrideRoles = await this.query()
+      .where({
+        //OrganizationID: fetch_data.OrganizationID,
+        RoleType: RoleTypes.Override
+      })
+      .fetch();
 
-  //     //Swap override roles for defaults using their slugs
-  //     let rolesCollection = Roles.toJSON();
-  //     let overrideCollection = OverrideRoles.toJSON();
+    //Swap override roles for defaults using their slugs
+    let rolesCollection = Roles.toJSON();
+    let overrideCollection = OverrideRoles.toJSON();
 
-  //     let organizationUsers = await User.query().where({ OrganizationID: fetch_data.OrganizationID }).fetch();
+    let organizationUsers = await User.query()
+    //.where({OrganizationID : fetch_data.OrganizationID})
+    .fetch();
 
-  //     let organizationRoles = _.map(rolesCollection, role => {
-  //         //Check if this role contains the same slug as an override
-  //         let foundOverride = _.find(overrideCollection, {
-  //             RoleSlug: role.RoleSlug
-  //         });
+    let organizationRoles = _.map(rolesCollection, role => {
+      //Check if this role contains the same slug as an override
+      let foundOverride = _.find(overrideCollection, {
+        RoleSlug: role.RoleSlug
+      });
 
-  //         if (foundOverride) {
-  //             return foundOverride;
-  //         }
+      if (foundOverride) {
+        return foundOverride;
+      }
 
-  //         role.Users = _.filter(organizationUsers.toJSON(), (user) => {
-  //             return user.RoleIDs.indexOf(role.RoleSlug) != -1;
-  //         })
+      role.Users = _.filter(organizationUsers.toJSON(), (user) => {
+        return user.RoleIDs.indexOf(role.RoleSlug) != -1;
+      })
 
-  //         return role;
-  //     });
+      return role;
+    });
 
-  //     return organizationRoles;
-  // } //getOrganizationRoles
+    return organizationRoles;
+  } //getOrganizationRoles
 }
 
 module.exports = Role
