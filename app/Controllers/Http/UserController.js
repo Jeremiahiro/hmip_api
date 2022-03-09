@@ -8,7 +8,7 @@ const moment = require("moment");
 const { Console } = require("console");
 const Database = use('Database');
 
-const { validate, validateAll } = use("Validator");
+const { validate } = use("Validator");
 
 
 const User = use("App/Models/User");
@@ -108,141 +108,6 @@ class UserController {
       });
     }
   } //createUser
-  // async activateAccount({ request, response }) {
-  //   const data = request.post();
-
-  //   const rules = {
-  //     Email: `required|exists:${User.table},Email`,
-  //     Password: `required`
-  //   };
-
-  //   const messages = {
-  //     "Email.required": "An email is required",
-  //     "Email.exists": "User does not exist",
-  //     "Password.required": "Password is required"
-  //   };
-
-  //   const validation = await validate(data, rules, messages);
-
-  //   if (validation.fails()) {
-  //     return response.status(400).send({
-  //       success: false,
-  //       message: ControllerHelpers.extractValidationErrorMessages(
-  //         validation.messages()
-  //       )
-  //     });
-  //   }
-
-  //   try {
-  //     let user = await User.findBy("Email", data.Email);
-  //     data.UserID = user.UserID;
-  //     let resetPassword = await User.resetPassword(data);
-
-  //     response.json({
-  //       success: true,
-  //       details: resetPassword,
-  //       message: "Account Successfully Activated"
-  //     });
-  //   } catch (error) {
-  //     Logger.error("Error : ", error);
-  //     return response.status(500).send({
-  //       success: false,
-  //       message: error.toString()
-  //     });
-  //   }
-  // } //activateAccount
-
-  // async initiatePasswordReset({ request, response }) {
-  //   const data = request.post();
-
-  //   const rules = {
-  //     Email: `required|exists:${User.table},Email`
-  //   };
-
-  //   const messages = {
-  //     "Email.required": "An email is required",
-  //     "Email.exists": "User does not exist"
-  //   };
-
-  //   const validation = await validate(data, rules, messages);
-
-  //   if (validation.fails()) {
-  //     return response.status(400).send({
-  //       success: false,
-  //       message: ControllerHelpers.extractValidationErrorMessages(
-  //         validation.messages()
-  //       )
-  //     });
-  //   }
-
-  //   try {
-  //     //Get this user
-  //     let user = await User.findBy("Email", data.Email);
-
-  //     //Generate Reset Token
-  //     let passwordResetToken = ControllerHelpers.makeid(10);
-  //     let passwordResetExpiryTime = moment()
-  //       .add(2, "h")
-  //       .unix(); //Set 2hours from now
-
-  //     let updateData = {
-  //       ResetPasswordToken: passwordResetToken,
-  //       ResetPasswordTokenExpiry: passwordResetExpiryTime,
-  //       ResetPasswordTokenUsed: false
-  //     };
-
-  //     let update_user = await User.updateUser(
-  //       { UserID: user.UserID },
-  //       updateData
-  //     );
-
-  //     //Send the user a mail
-  //     //  let request_origin = url.parse(request.request.headers.origin);
-  //     // let host = ControllerHelpers.cleanHost(request_origin.host);
-
-  //     if (update_user) {
-  //       //Send Email to user
-
-  //       // const passwordResetEmailConfig = {
-  //       //   templateFile: "PasswordResetTemplate.html",
-  //       //   from: "info@anan.org.ng",
-  //       //   to: user.Email,
-  //       //   subject: "ANAN Account Password Reset",
-  //       //   data: {
-  //       //     fullname: user.FullName,
-  //       //     host: host,
-  //       //     email: user.Email,
-  //       //     protocol: request.protocol(),
-  //       //     token: passwordResetToken
-  //       //   }
-  //       // };
-
-  //       let return_body = {
-  //         success: true,
-  //         details: updateData,
-
-  //         message: "Password Reset Successfully Initiated"
-  //       };
-
-  //       //const sendMail = await SendMail.sendMail(passwordResetEmailConfig);
-
-  //       response.send(return_body);
-  //     } else {
-  //       return response.status(400).send({
-  //         success: false,
-  //         message: "Could not process password reset"
-  //       });
-  //     }
-  //   } catch (error) {
-  //     Logger.error("Error : ", error);
-  //     return response.status(500).send({
-  //       success: false,
-  //       error: error.toString(),
-  //       message: "Could not Initiate Password Reset"
-  //     });
-  //   }
-  // } 
-  //initiatePasswordReset
 
   async resetPassword({ request, response }) {
     const data = request.post();
@@ -360,7 +225,6 @@ class UserController {
         //let department = await Department.find(user.DepartmentID);
         //Get all roles
         let all_roles = await Role.getRoles({ IsEnabled: 1 });
-        console.log("ALL ROLES", all_roles);
         let userRoles = await Role.getUserRoles(user.UserID);
 
         let accessToken = await auth.generate(user);
@@ -406,21 +270,6 @@ class UserController {
       const users = await User.getUsers(data);
 
       let usersJSON = users.toJSON();
-
-      let allOrganizationRoles = await Role.getOrganizationRoles({
-        OrganizationID: data.OrganizationID
-      });
-
-      usersJSON = _.map(usersJSON, user => {
-        user.Roles = _.map(user.RoleIDs, roleslug => {
-          let role = _.find(allOrganizationRoles, { RoleSlug: roleslug });
-          delete role.Users;
-          return role;
-        });
-
-        return user;
-      });
-
       const return_body = {
         success: true,
         details: usersJSON,
@@ -636,6 +485,20 @@ class UserController {
     try {
       const user = await User.getUser(UserID);
 
+      //get roles
+      // let all_roles = await Role.getRoles({ IsEnabled: 1 });
+      // console.log("ALL ROLES", all_roles);
+      let userRoles = await Role.getUserRoles(user.UserID);
+
+
+      let all_user_permissions = [];
+
+      _.forEach(userRoles, function (role) {
+        all_user_permissions = [...all_user_permissions, ...role.Permissions];
+      });
+     // user.all_roles = all_roles;
+      user.user_roles = userRoles;
+      user.all_user_permissions = _.uniq(all_user_permissions);
       const return_body = {
         success: true,
         details: user,
@@ -652,28 +515,7 @@ class UserController {
     }
   } //getUser
   
-  async fetchUsersCount({ request, response }) {
-    const data = request.all();
-
-    try {
-      const users = await User.getUserCount(data);
-
-      //let usersJSON = users.toJSON();
-      const return_body = {
-        success: true,
-        details: users || {},
-        message: "Number of Users Successfully Fetched"
-      };
-
-      response.send(return_body);
-    } catch (error) {
-      Logger.error("Error : ", error);
-      return response.status(500).send({
-        success: false,
-        message: error.toString()
-      });
-    }
-  } //fetchUsersCount
+ 
 
   async activateAccount({ Email, Password }) {
 
@@ -758,6 +600,141 @@ class UserController {
     }
   } //resetDefaultPassword
 
+  // async activateAccount({ request, response }) {
+  //   const data = request.post();
+
+  //   const rules = {
+  //     Email: `required|exists:${User.table},Email`,
+  //     Password: `required`
+  //   };
+
+  //   const messages = {
+  //     "Email.required": "An email is required",
+  //     "Email.exists": "User does not exist",
+  //     "Password.required": "Password is required"
+  //   };
+
+  //   const validation = await validate(data, rules, messages);
+
+  //   if (validation.fails()) {
+  //     return response.status(400).send({
+  //       success: false,
+  //       message: ControllerHelpers.extractValidationErrorMessages(
+  //         validation.messages()
+  //       )
+  //     });
+  //   }
+
+  //   try {
+  //     let user = await User.findBy("Email", data.Email);
+  //     data.UserID = user.UserID;
+  //     let resetPassword = await User.resetPassword(data);
+
+  //     response.json({
+  //       success: true,
+  //       details: resetPassword,
+  //       message: "Account Successfully Activated"
+  //     });
+  //   } catch (error) {
+  //     Logger.error("Error : ", error);
+  //     return response.status(500).send({
+  //       success: false,
+  //       message: error.toString()
+  //     });
+  //   }
+  // } //activateAccount
+
+  // async initiatePasswordReset({ request, response }) {
+  //   const data = request.post();
+
+  //   const rules = {
+  //     Email: `required|exists:${User.table},Email`
+  //   };
+
+  //   const messages = {
+  //     "Email.required": "An email is required",
+  //     "Email.exists": "User does not exist"
+  //   };
+
+  //   const validation = await validate(data, rules, messages);
+
+  //   if (validation.fails()) {
+  //     return response.status(400).send({
+  //       success: false,
+  //       message: ControllerHelpers.extractValidationErrorMessages(
+  //         validation.messages()
+  //       )
+  //     });
+  //   }
+
+  //   try {
+  //     //Get this user
+  //     let user = await User.findBy("Email", data.Email);
+
+  //     //Generate Reset Token
+  //     let passwordResetToken = ControllerHelpers.makeid(10);
+  //     let passwordResetExpiryTime = moment()
+  //       .add(2, "h")
+  //       .unix(); //Set 2hours from now
+
+  //     let updateData = {
+  //       ResetPasswordToken: passwordResetToken,
+  //       ResetPasswordTokenExpiry: passwordResetExpiryTime,
+  //       ResetPasswordTokenUsed: false
+  //     };
+
+  //     let update_user = await User.updateUser(
+  //       { UserID: user.UserID },
+  //       updateData
+  //     );
+
+  //     //Send the user a mail
+  //     //  let request_origin = url.parse(request.request.headers.origin);
+  //     // let host = ControllerHelpers.cleanHost(request_origin.host);
+
+  //     if (update_user) {
+  //       //Send Email to user
+
+  //       // const passwordResetEmailConfig = {
+  //       //   templateFile: "PasswordResetTemplate.html",
+  //       //   from: "info@anan.org.ng",
+  //       //   to: user.Email,
+  //       //   subject: "ANAN Account Password Reset",
+  //       //   data: {
+  //       //     fullname: user.FullName,
+  //       //     host: host,
+  //       //     email: user.Email,
+  //       //     protocol: request.protocol(),
+  //       //     token: passwordResetToken
+  //       //   }
+  //       // };
+
+  //       let return_body = {
+  //         success: true,
+  //         details: updateData,
+
+  //         message: "Password Reset Successfully Initiated"
+  //       };
+
+  //       //const sendMail = await SendMail.sendMail(passwordResetEmailConfig);
+
+  //       response.send(return_body);
+  //     } else {
+  //       return response.status(400).send({
+  //         success: false,
+  //         message: "Could not process password reset"
+  //       });
+  //     }
+  //   } catch (error) {
+  //     Logger.error("Error : ", error);
+  //     return response.status(500).send({
+  //       success: false,
+  //       error: error.toString(),
+  //       message: "Could not Initiate Password Reset"
+  //     });
+  //   }
+  // } 
+  //initiatePasswordReset
 
 }
 
