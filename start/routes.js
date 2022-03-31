@@ -153,13 +153,10 @@ Route.group(() => {
           ]);
           Route.post("update", "NmmipStateController.updateNmmipState");
           Route.delete("delete", "NmmipStateController.removeNmmipState");
-          Route.route("count", "NmmipStateController.fetchNmmipStateCount", [
-            "GET",
-            "POST"
-          ]);
 })
 .prefix("NmmipStates")     
 //NmmipStates
+
 Route.group(() => {
 Route.post("create", "SexController.createSex");
             
