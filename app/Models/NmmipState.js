@@ -20,12 +20,12 @@ class NmmipState extends Model {
 
       static async getNmmipStates(fetch_data) {
         const NmmipNmmipStates = await this.query()
-       // .where(fetch_data)
-        //.fetch();
-        .paginate(fetch_data.page,fetch_data.limit)
+        .where(fetch_data)
+        .fetch();
+        //.paginate(fetch_data.page,fetch_data.limit)
         return NmmipNmmipStates;
       } //getNmmipStates
-
+      
       static async getNmmipState(StateID) {
         const NmmipState = await this.find(StateID);
     
