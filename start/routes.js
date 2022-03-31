@@ -158,8 +158,7 @@ Route.group(() => {
             "POST"
           ]);
 })
-.prefix("NmmipStates")
-//.middleware(["auth"]);      
+.prefix("NmmipStates")     
 //NmmipStates
 Route.group(() => {
 Route.post("create", "SexController.createSex");
